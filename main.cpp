@@ -130,6 +130,4 @@ void moveBackward(double inches){
     right_motor.SetPercent(40);
     while(fr_micro.Value() || fl_micro.Value()){};
     left_motor.SetPercent(0);
-    right_motor.SetPercent(0);
-
     */
