@@ -2,6 +2,7 @@
 #include <FEHIO.h>
 #include <FEHUtility.h>
 #include <FEHLCD.h>
+#include <FEHServo.h>
 
 int main(void)
 {
@@ -10,10 +11,19 @@ int main(void)
 
     FEHMotor left_motor(FEHMotor::Motor0,9.0); 
     FEHMotor right_motor(FEHMotor::Motor2,9.0); 
+
     DigitalInputPin fr_micro(FEHIO::P0_7);
     DigitalInputPin br_micro(FEHIO::P0_5);
     DigitalInputPin fl_micro(FEHIO::P3_7);
     DigitalInputPin bl_micro(FEHIO::P3_6);
+}
+
+    //Peformance Test 1
+    
+
+
+    //Exploration 02
+    /*
 
     left_motor.SetPercent(40);
     right_motor.SetPercent(40);
@@ -44,4 +54,5 @@ int main(void)
     while(fr_micro.Value() || fl_micro.Value()){};
     left_motor.SetPercent(0);
     right_motor.SetPercent(0);
-} 
+
+    */
