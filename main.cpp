@@ -21,7 +21,7 @@ int main(void)
 
 }
 
-//Peformance Test 1
+//Code for Peformance Test 1
 void peformanceTest1(void){
     //first part
 
@@ -29,6 +29,7 @@ void peformanceTest1(void){
     setMotorSpeed(MOTORPOWER, MOTORPOWER);
 }
 
+//Sets the left and right motor speed
 void setMotorSpeed(int leftSpeed, int rightSpeed){
     left_motor.SetPercent(leftSpeed);
     right_motor.SetPercent(rightSpeed);
