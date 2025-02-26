@@ -23,12 +23,12 @@ int main(void)
 
 //Code for Peformance Test 1
 void peformanceTest1(void){
+    setMotorSpeed(MOTORPOWER, MOTORPOWER);
     /*  FIRST PART: 
         Starting with robots trailing edge AGAINST the wall to the right of the starting area. 
         Then, drive until you hit the other wall on the left side WITHOUT touching compost bin or tree stump
     */
-   setMotorSpeed(MOTORPOWER, MOTORPOWER);
-
+    
 
     /*  SECOND PART: 
         Place robot arbitrarily on the lower level at the bottom of the ramp with NO driving surfaces
@@ -81,6 +81,4 @@ void setMotorSpeed(int leftSpeed, int rightSpeed){
     right_motor.SetPercent(40);
     while(fr_micro.Value() || fl_micro.Value()){};
     left_motor.SetPercent(0);
-    right_motor.SetPercent(0);
-
     */
