@@ -4,18 +4,13 @@
 #include <FEHLCD.h>
 #include <FEHServo.h>
 
+FEHMotor right_motor(FEHMotor::Motor1,9.0); 
 FEHMotor left_motor(FEHMotor::Motor0,9.0); 
-FEHMotor right_motor(FEHMotor::Motor2,9.0); 
 
-DigitalInputPin fr_micro(FEHIO::P0_7);
-DigitalInputPin br_micro(FEHIO::P0_5);
-DigitalInputPin fl_micro(FEHIO::P3_7);
-DigitalInputPin bl_micro(FEHIO::P3_6);
+DigitalEncoder left_encoder(FEHIO::P0_0);
+DigitalEncoder right_encoder(FEHIO::P3_5);
 
-DigitalEncoder left_encoder(FEHIO::P2_0);
-DigitalEncoder right_encoder(FEHIO::P3_0);
-
-#define MOTORPOWER 40
+#define MOTORPOWER 35
 #define PI 3.14159265359
 
 void performanceTest1(void);
@@ -45,37 +40,39 @@ int main(void)
 
 //Code for Peformance Test 1
 void performanceTest1(void){
+    float x,y;
     //first part
-    moveForward(37);//distance: 37 inches
+    moveForward(28);//distance: 32 inches
+    while(!LCD.Touch(&x,&y)){};
 
     //second part: ramp
-    moveForward(27);
-    moveBackward(27);
+    moveForward(25);
+    moveBackward(45);
 }
 
 //Sets the left and right motor speed
 void setMotorSpeed(int leftSpeed, int rightSpeed){
-    left_motor.SetPercent(leftSpeed);
     right_motor.SetPercent(rightSpeed);
+    left_motor.SetPercent(leftSpeed);
 }
 
 void moveForward(double inches){
     //Convert inches to counts
-    int counts=(inches * 360)/(2.0 * PI * 2.75);
+    int counts=(inches * 318)/(3.0 * PI);
 
     //Reset encodor counts
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
 
     //Set both motors to desired percent
-    setMotorSpeed(MOTORPOWER, MOTORPOWER - 1);
+    setMotorSpeed(MOTORPOWER + 1, MOTORPOWER);
 
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
 
     //Turn off motors
-    right_motor.Stop();
     left_motor.Stop();
+    right_motor.Stop();
 
     //Sleep .5 seconds
     Sleep(.5);
@@ -90,14 +87,14 @@ void moveBackward(double inches){
     left_encoder.ResetCounts();
 
     //Set both motors to desired percent
-    setMotorSpeed(-1*MOTORPOWER, -1*MOTORPOWER + 1);
+    setMotorSpeed(-1*MOTORPOWER, -1*MOTORPOWER -1);
 
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
 
     //Turn off motors
-    right_motor.Stop();
     left_motor.Stop();
+    right_motor.Stop();
 
     //Sleep .5 seconds
     Sleep(.5);
