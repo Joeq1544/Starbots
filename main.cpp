@@ -18,6 +18,11 @@ DigitalEncoder right_encoder(FEHIO::P3_0);
 #define MOTORPOWER 40
 #define PI 3.14159265359
 
+void performanceTest1(void);
+void setMotorSpeed(int leftSpeed, int rightSpeed);
+void moveForward(double inches);
+void moveBackward(double inches);
+
 int main(void)
 {
     float x,y;
