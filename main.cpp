@@ -38,16 +38,21 @@ int main(void)
 
 }
 
-//Code for Peformance Test 1
+/*Code for Peformance Test 1.
+    In this checkpoint, the robot must go from one edge to the other. 
+    Then, must go up the ramp. Bonus points for going back down.
+*/
 void performanceTest1(void){
+    //x and y variables for the touch input while loop.
     float x,y;
-    //first part
+
+    //Part 1: Going from one edge to the other
     moveForward(28);//distance: 32 inches
     while(!LCD.Touch(&x,&y)){};
 
-    //second part: ramp
+    //second part: going up and back down the ramp.
     moveForward(25);
-    moveBackward(45);
+    moveBackward(30);
 }
 
 //Sets the left and right motor speed
@@ -70,17 +75,17 @@ void moveForward(double inches){
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
 
-    //Turn off motors
+    //Turn off motors once desired drive length is achieved
     left_motor.Stop();
     right_motor.Stop();
 
-    //Sleep .5 seconds
+    //Sleep .5 seconds as to not damage motors
     Sleep(.5);
 }
 
 void moveBackward(double inches){
     //Convert inches to counts
-    int counts=(inches*360)/(2.0*PI*2.75);
+    int counts=(inches * 318)/(3.0 * PI);
 
     //Reset encodor counts
     right_encoder.ResetCounts();
@@ -92,11 +97,11 @@ void moveBackward(double inches){
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
 
-    //Turn off motors
+    //Turn off motors once desired drive length is achieved
     left_motor.Stop();
     right_motor.Stop();
 
-    //Sleep .5 seconds
+    //Sleep .5 seconds as to not damage motors
     Sleep(.5);
 }
 
