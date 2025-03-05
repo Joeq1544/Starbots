@@ -104,8 +104,8 @@ void moveBackward(double inches){
 }
 
 void turn(double angle, bool clockwise){
-    double turningRadius = 3.5; //distance from center of robot to a wheel
-    double distance = turningRadius * (PI * (angle/180.0));
+    double turningRadius = 8.1; //distance from center of robot to a wheel
+    double distance = (turningRadius * PI) * (angle/360.0);
 
     //Convert inches to counts
     int counts=(distance * 318)/(3.0 * PI);
@@ -155,35 +155,35 @@ void milestone1(void){
 void milestone2(void){
 
     //start light
-    LCD.Write(CdS_cell.Value());
-    while(CdS_cell.Value() > 0.860){}
 
-    moveBackward(1); //press the start button?
+    // LCD.Write(CdS_cell.Value());
+    // while(CdS_cell.Value() > 0.860){}
 
-    turn(70, 1); 
+    turn(45, 1); 
 
     moveForward(25); //up the ramp
 
+    turn(90, 0);
 
     //TODO: line up to read the light
 
 
     //red or blue
-    LCD.WriteLine(CdS_cell.Value());
-    if(CdS_cell.Value() > .860) {
-        //red
-        LCD.WriteLine("RED");
-        right(90, 1); //turn backwards
-        moveBackward(5); //press the button
-        moveForward(10);
-    }
-    else{
-        //blue
-        LCD.WriteLine("BLUE");
-        right(90, 1); //turn backwards
-        moveBackward(5); //press the button
-        moveForward(10);
-    }
+    // LCD.WriteLine(CdS_cell.Value());
+    // if(CdS_cell.Value() > .860) {
+    //     //red
+    //     LCD.WriteLine("RED");
+    //     right(90, 1); //turn backwards
+    //     moveBackward(5); //press the button
+    //     moveForward(10);
+    // }
+    // else{
+    //     //blue
+    //     LCD.WriteLine("BLUE");
+    //     right(90, 1); //turn backwards
+    //     moveBackward(5); //press the button
+    //     moveForward(10);
+    // }
 
 
 }
