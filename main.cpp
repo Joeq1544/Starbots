@@ -3,6 +3,7 @@
 #include <FEHUtility.h>
 #include <FEHLCD.h>
 #include <FEHServo.h>
+#include <FEHRCS.h>
 
 FEHMotor right_motor(FEHMotor::Motor1,9.0); 
 FEHMotor left_motor(FEHMotor::Motor0,9.0); 
@@ -10,20 +11,25 @@ FEHMotor left_motor(FEHMotor::Motor0,9.0);
 DigitalEncoder left_encoder(FEHIO::P0_0);
 DigitalEncoder right_encoder(FEHIO::P3_5);
 
+AnalogInputPin CdS_cell(FEHIO::P0_3);
+
 #define MOTORPOWER 35
 #define PI 3.14159265359
 
-void performanceTest1(void);
+void milestone1(void);
 void setMotorSpeed(int leftSpeed, int rightSpeed);
 void moveForward(double inches);
 void moveBackward(double inches);
+void milestone2(void);
+void turn(double angle, bool clockwise);
 
 int main(void)
 {
     float x,y;
     while(!LCD.Touch(&x,&y)){};
 
-    performanceTest1();
+    //milestone1();
+    milestone2();
 
     //for debugging
     while (true) {
@@ -38,11 +44,11 @@ int main(void)
 
 }
 
-/*Code for Peformance Test 1.
+/*Code for Milestone 1.
     In this checkpoint, the robot must go from one edge to the other. 
     Then, must go up the ramp. Bonus points for going back down.
 */
-void performanceTest1(void){
+void milestone1(void){
     //x and y variables for the touch input while loop.
     float x,y;
 
@@ -53,6 +59,49 @@ void performanceTest1(void){
     //second part: going up and back down the ramp.
     moveForward(25);
     moveBackward(30);
+}
+
+/*
+    Code for Milestone2
+    In this checkpoint, the robot drives to upper level, reads and displays color of 
+    humidifier light on Proteus screen, then pushes the correct button. 
+    Bonus points for dirving back to the lower level and pushing the final button.
+
+*/
+void milestone2(void){
+
+    //start light
+    LCD.Write(CdS_cell.Value());
+    while(CdS_cell.Value() > 0.860){}
+
+    moveBackward(1); //press the start button?
+
+    turn(70, 1); 
+
+    moveForward(25); //up the ramp
+
+
+    //TODO: line up to read the light
+
+
+    //red or blue
+    LCD.WriteLine(CdS_cell.Value());
+    if(CdS_cell.Value() > .860) {
+        //red
+        LCD.WriteLine("RED");
+        right(90, 1); //turn backwards
+        moveBackward(5); //press the button
+        moveForward(10);
+    }
+    else{
+        //blue
+        LCD.WriteLine("BLUE");
+        right(90, 1); //turn backwards
+        moveBackward(5); //press the button
+        moveForward(10);
+    }
+
+
 }
 
 //Sets the left and right motor speed
@@ -101,40 +150,33 @@ void moveBackward(double inches){
     left_motor.Stop();
     right_motor.Stop();
 
-    //Sleep .5 seconds as to not damage motors
+    //Sleep .5 seconds
     Sleep(.5);
 }
 
+void turn(double angle, bool clockwise){
+    double turningRadius = 3.5; //distance from center of robot to a wheel
+    double distance = turningRadius * (PI * (angle/180.0));
 
-    //Exploration 02
-    /*
+    //Convert inches to counts
+    int counts=(distance * 318)/(3.0 * PI);
 
-    left_motor.SetPercent(40);
-    right_motor.SetPercent(40);
-    while(fr_micro.Value() || fl_micro.Value()){};
-    left_motor.SetPercent(-25);
-    right_motor.SetPercent(-25);
-    Sleep(250);
-    left_motor.SetPercent(-40);
-    right_motor.SetPercent(40);
-    Sleep(500);
-    left_motor.SetPercent(-25);
-    right_motor.SetPercent(-25);
-    while(br_micro.Value()){};
-    left_motor.SetPercent(40);
-    right_motor.SetPercent(40);
-    while(fr_micro.Value() || fl_micro.Value()){};
-    left_motor.SetPercent(-25);
-    right_motor.SetPercent(-25);
-    Sleep(250);
-    left_motor.SetPercent(40);
-    right_motor.SetPercent(-40);
-    Sleep(500); 
-    left_motor.SetPercent(-25);
-    right_motor.SetPercent(-25);
-    while(br_micro.Value()||bl_micro.Value()){};
-    left_motor.SetPercent(40);
-    right_motor.SetPercent(40);
-    while(fr_micro.Value() || fl_micro.Value()){};
-    left_motor.SetPercent(0);
-    */
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+
+    //clockwise = 1 -> right and clockwise = 0 -> left
+    if(clockwise){
+        setMotorSpeed(MOTORPOWER, -1 * MOTORPOWER); //turn right
+    }else{
+        setMotorSpeed(-1 * MOTORPOWER, MOTORPOWER); //turn left
+    }
+
+     //Motors run while the average of the left and right encoder is less than counts
+     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
+
+    //Turn off motors
+    right_motor.Stop();
+    left_motor.Stop();
+}
+
+
