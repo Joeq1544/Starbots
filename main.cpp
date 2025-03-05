@@ -28,7 +28,7 @@ int main(void)
     float x,y;
     while(!LCD.Touch(&x,&y)){};
 
-    //milestone1();
+    //milestone2();
     milestone2();
 
     //for debugging
@@ -44,65 +44,9 @@ int main(void)
 
 }
 
-/*Code for Milestone 1.
-    In this checkpoint, the robot must go from one edge to the other. 
-    Then, must go up the ramp. Bonus points for going back down.
-*/
-void milestone1(void){
-    //x and y variables for the touch input while loop.
-    float x,y;
-
-    //Part 1: Going from one edge to the other
-    moveForward(28);//distance: 32 inches
-    while(!LCD.Touch(&x,&y)){};
-
-    //second part: going up and back down the ramp.
-    moveForward(25);
-    moveBackward(30);
-}
-
-/*
-    Code for Milestone2
-    In this checkpoint, the robot drives to upper level, reads and displays color of 
-    humidifier light on Proteus screen, then pushes the correct button. 
-    Bonus points for dirving back to the lower level and pushing the final button.
-
-*/
-void milestone2(void){
-
-    //start light
-    LCD.Write(CdS_cell.Value());
-    while(CdS_cell.Value() > 0.860){}
-
-    moveBackward(1); //press the start button?
-
-    turn(70, 1); 
-
-    moveForward(25); //up the ramp
 
 
-    //TODO: line up to read the light
 
-
-    //red or blue
-    LCD.WriteLine(CdS_cell.Value());
-    if(CdS_cell.Value() > .860) {
-        //red
-        LCD.WriteLine("RED");
-        right(90, 1); //turn backwards
-        moveBackward(5); //press the button
-        moveForward(10);
-    }
-    else{
-        //blue
-        LCD.WriteLine("BLUE");
-        right(90, 1); //turn backwards
-        moveBackward(5); //press the button
-        moveForward(10);
-    }
-
-
-}
 
 //Sets the left and right motor speed
 void setMotorSpeed(int leftSpeed, int rightSpeed){
@@ -179,4 +123,62 @@ void turn(double angle, bool clockwise){
     left_motor.Stop();
 }
 
+/*Code for Milestone 1.
+    In this checkpoint, the robot must go from one edge to the other. 
+    Then, must go up the ramp. Bonus points for going back down.
+*/
+void milestone1(void){
+    //x and y variables for the touch input while loop.
+    float x,y;
 
+    //Part 1: Going from one edge to the other
+    moveForward(28);//distance: 32 inches
+    while(!LCD.Touch(&x,&y)){};
+
+    //second part: going up and back down the ramp.
+    moveForward(25);
+    moveBackward(30);
+}
+
+/*
+    Code for Milestone2
+    In this checkpoint, the robot drives to upper level, reads and displays color of 
+    humidifier light on Proteus screen, then pushes the correct button. 
+    Bonus points for dirving back to the lower level and pushing the final button.
+
+*/
+void milestone2(void){
+
+    //start light
+    LCD.Write(CdS_cell.Value());
+    while(CdS_cell.Value() > 0.860){}
+
+    moveBackward(1); //press the start button?
+
+    turn(70, 1); 
+
+    moveForward(25); //up the ramp
+
+
+    //TODO: line up to read the light
+
+
+    //red or blue
+    LCD.WriteLine(CdS_cell.Value());
+    if(CdS_cell.Value() > .860) {
+        //red
+        LCD.WriteLine("RED");
+        right(90, 1); //turn backwards
+        moveBackward(5); //press the button
+        moveForward(10);
+    }
+    else{
+        //blue
+        LCD.WriteLine("BLUE");
+        right(90, 1); //turn backwards
+        moveBackward(5); //press the button
+        moveForward(10);
+    }
+
+
+}
