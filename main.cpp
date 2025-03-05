@@ -4,6 +4,8 @@
 #include <FEHLCD.h>
 #include <FEHServo.h>
 #include <FEHRCS.h>
+#include <FEHBattery.h>
+
 
 FEHMotor right_motor(FEHMotor::Motor1,9.0); 
 FEHMotor left_motor(FEHMotor::Motor0,9.0); 
@@ -62,8 +64,10 @@ void moveForward(double inches){
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
 
+    float actualSpeed = (11.5 / Battery.Voltage()) * MOTORPOWER;
+
     //Set both motors to desired percent
-    setMotorSpeed(MOTORPOWER + 1, MOTORPOWER);
+    setMotorSpeed(actualSpeed + 1, actualSpeed);
 
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
@@ -84,8 +88,9 @@ void moveBackward(double inches){
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
 
+    float actualSpeed = (11.5 / Battery.Voltage()) * MOTORPOWER;
     //Set both motors to desired percent
-    setMotorSpeed(-1*MOTORPOWER, -1*MOTORPOWER -1);
+    setMotorSpeed(-1*actualSpeed, -1*actualSpeed -1);
 
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
