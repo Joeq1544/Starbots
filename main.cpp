@@ -6,6 +6,7 @@
 #include <FEHRCS.h>
 #include <FEHBattery.h>
 #include <math.h>
+#include <time.h>
 
 
 FEHMotor right_motor(FEHMotor::Motor1,9.0); 
@@ -37,8 +38,6 @@ int main(void)
     //     while(!LCD.Touch(&x,&y)){};
     //     turn(-90);
     // }
-
-    
 
     //milestone2();
     milestone2();
@@ -120,7 +119,7 @@ void turn(double angle){
     //Turn off motors
     right_motor.Stop();
     left_motor.Stop();
-    Sleep(0.5)
+    Sleep(0.5);
 }
 
 /*Code for Milestone 1.
@@ -154,17 +153,31 @@ void milestone2(void){
     do{
         LCD.WriteLine(CdS_cell.Value());
         Sleep(0.1);    
-    } while (CdS_cell.Value() > 2.0);
+    } while (CdS_cell.Value() > 1.7);
 
     turn(-90); 
-    move(7); //move towards ramp
-    turn(-30);
+    move(6); //move towards ramp
+    turn(-36);
     move(31); //up the ramp
     turn(-87); //turn towards humidifier buttons
-    move(10.5); //Move towards humidifier buttons
+    move(11); //Move towards humidifier buttons
 
     //TODO: line up to read the light
-    Sleep(2.0);
+    Sleep(1.0);
+
+    bool forward = false;
+    int count = 0;
+    while (fabs(CdS_cell.Value() - 2.0) > 0.3 && fabs(CdS_cell.Value() - 1.5) > 0.3 && count < 4) { 
+        if (!forward) {
+            move(0.5);
+            forward = true;
+        }
+        else {
+            move(-1);
+            forward = false;
+        }
+        count++;
+    }
 
     // red or blue
     LCD.WriteLine(CdS_cell.Value());
@@ -174,16 +187,19 @@ void milestone2(void){
         turn(87); //turn 
         move(2);
         turn(87); //turn 
-
-
+        move(-12.7); //press the humidifier button
     } else{
         //blue
         LCD.WriteLine("BLUE");
         turn(-87); //turn backwards
-        move(2);  
-        turn(-87); //turn   
+        move(3);  
+        turn(-87); //turn  
+        move(-12.7); //press the humidifier button
+ 
     }
-    move(-10); //press the button
-    move(10);
+    move(24);
+    turn(90);
+    move(40);
+
 
 }
