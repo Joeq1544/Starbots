@@ -165,7 +165,7 @@ void milestone2(void){
     moveForward(7); //move towards ramp
     turn(30, 0);
     moveForward(31); //up the ramp
-    turn(85, 0); //turn towards humidifier buttons
+    turn(83, 0); //turn towards humidifier buttons
     moveForward(9); //Move towards humidifier buttons
 
     //TODO: line up to read the light
