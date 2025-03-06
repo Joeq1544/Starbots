@@ -28,7 +28,17 @@ void turn(double angle);
 int main(void)
 {
     float x,y;
-    while(!LCD.Touch(&x,&y)){};
+
+    //Turn testing
+    // while(true){
+    //     while(!LCD.Touch(&x,&y)){};
+    //     turn(90);
+    //     LCD.ClearBuffer();
+    //     while(!LCD.Touch(&x,&y)){};
+    //     turn(-90);
+    // }
+
+    
 
     //milestone2();
     milestone2();
@@ -91,15 +101,17 @@ void turn(double angle){
     double distance = (turningRadius * PI) * (abs(angle)/360.0);
 
     //Convert inches to counts
-    int counts=(distance * 318)/(3.0 * PI);
+    int counts=(distance * 306)/(3.0 * PI);
 
     right_encoder.ResetCounts();
     left_encoder.ResetCounts();
 
+    float actualSpeed = (11.5 / Battery.Voltage()) * MOTORPOWER;
+
     if(angle > 0){
-        setMotorSpeed(MOTORPOWER, -1 * MOTORPOWER); //turn right
+        setMotorSpeed(actualSpeed, -actualSpeed); //turn right
     }else{
-        setMotorSpeed(-1 * MOTORPOWER, MOTORPOWER); //turn left
+        setMotorSpeed(-actualSpeed, actualSpeed); //turn left
     }
 
      //Motors run while the average of the left and right encoder is less than counts
@@ -148,30 +160,30 @@ void milestone2(void){
     move(7); //move towards ramp
     turn(-30);
     move(31); //up the ramp
-    turn(-83); //turn towards humidifier buttons
-    move(9); //Move towards humidifier buttons
+    turn(-87); //turn towards humidifier buttons
+    move(10.5); //Move towards humidifier buttons
 
     //TODO: line up to read the light
-
+    Sleep(2.0);
 
     // red or blue
     LCD.WriteLine(CdS_cell.Value());
     if(CdS_cell.Value() < 1.65) {
         //red
         LCD.WriteLine("RED");
-        turn(90); //turn 
+        turn(87); //turn 
         move(2);
-        turn(90); //turn 
+        turn(87); //turn 
 
 
     } else{
         //blue
         LCD.WriteLine("BLUE");
-        turn(-90); //turn backwards
+        turn(-87); //turn backwards
         move(2);  
-        turn(-90); //turn   
+        turn(-87); //turn   
     }
-    move(-7); //press the button
+    move(-10); //press the button
     move(10);
 
 }
