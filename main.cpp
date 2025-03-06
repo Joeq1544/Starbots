@@ -13,7 +13,7 @@ FEHMotor left_motor(FEHMotor::Motor0,9.0);
 DigitalEncoder left_encoder(FEHIO::P0_0);
 DigitalEncoder right_encoder(FEHIO::P3_5);
 
-AnalogInputPin CdS_cell(FEHIO::P0_3);
+AnalogInputPin CdS_cell(FEHIO::P0_1);
 
 #define MOTORPOWER 35
 #define PI 3.14159265359
@@ -156,8 +156,8 @@ void milestone2(void){
 
     //start light
 
-    // LCD.Write(CdS_cell.Value());
-    // while(CdS_cell.Value() > 0.860){}
+    LCD.Write(CdS_cell.Value());
+    while(CdS_cell.Value() > 0.860){}
 
     turn(45, 1); 
 
