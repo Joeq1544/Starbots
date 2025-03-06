@@ -156,34 +156,42 @@ void milestone2(void){
 
     //start light
 
-    LCD.Write(CdS_cell.Value());
-    while(CdS_cell.Value() > 0.860){}
+    do{
+        LCD.WriteLine(CdS_cell.Value());
+        Sleep(0.1);    
+    } while (CdS_cell.Value() > 2.0);
 
-    turn(45, 1); 
+    turn(90, 0); 
 
-    moveForward(25); //up the ramp
+    moveForward(7); //move towards ramp
 
-    turn(90, 0);
+    turn(30, 0);
+
+    moveForward(30); //up the ramp
+
+    turn(90, 0); //turn towards humidifier buttons
+
+    moveForward(13); //Move towards humidifier buttons
 
     //TODO: line up to read the light
 
 
-    //red or blue
-    // LCD.WriteLine(CdS_cell.Value());
-    // if(CdS_cell.Value() > .860) {
-    //     //red
-    //     LCD.WriteLine("RED");
-    //     right(90, 1); //turn backwards
-    //     moveBackward(5); //press the button
-    //     moveForward(10);
-    // }
-    // else{
-    //     //blue
-    //     LCD.WriteLine("BLUE");
-    //     right(90, 1); //turn backwards
-    //     moveBackward(5); //press the button
-    //     moveForward(10);
-    // }
+    // red or blue
+    LCD.WriteLine(CdS_cell.Value());
+    if(CdS_cell.Value() < 1.65) {
+        //red
+        LCD.WriteLine("RED");
+        turn(180, 1); //turn backwards
+        moveBackward(5); //press the button
+        moveForward(10);
+    }
+    else{
+        //blue
+        LCD.WriteLine("BLUE");
+        turn(180, 1); //turn backwards
+        moveBackward(5); //press the button
+        moveForward(10);
+    }
 
 
 }
