@@ -97,9 +97,9 @@ void turn(double angle){
     left_encoder.ResetCounts();
 
     if(angle > 0){
-        setMotorSpeed(MOTORPOWER, -1 * MOTORPOWER); //turn right
+        setMotorSpeed(MOTORPOWER + 1, -1 * MOTORPOWER); //turn right
     }else{
-        setMotorSpeed(-1 * MOTORPOWER, MOTORPOWER); //turn left
+        setMotorSpeed(-1 * MOTORPOWER - 1, MOTORPOWER); //turn left
     }
 
      //Motors run while the average of the left and right encoder is less than counts
@@ -108,6 +108,7 @@ void turn(double angle){
     //Turn off motors
     right_motor.Stop();
     left_motor.Stop();
+    Sleep(0.5)
 }
 
 /*Code for Milestone 1.
