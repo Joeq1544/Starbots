@@ -156,24 +156,26 @@ void milestone2(void){
     } while (CdS_cell.Value() > 1.7);
 
     turn(-90); 
-    move(6); //move towards ramp
-    turn(-36);
+    move(6.4); //move towards ramp
+    turn(-35);
     move(31); //up the ramp
-    turn(-87); //turn towards humidifier buttons
-    move(11); //Move towards humidifier buttons
+    turn(-86); //turn towards humidifier buttons
+    move(10); //Move towards humidifier buttons
 
     //TODO: line up to read the light
     Sleep(1.0);
 
     bool forward = false;
     int count = 0;
-    while (fabs(CdS_cell.Value() - 2.0) > 0.3 && fabs(CdS_cell.Value() - 1.5) > 0.3 && count < 4) { 
+    while (fabs(CdS_cell.Value() - 2.0) > 0.2 && fabs(CdS_cell.Value() - 1.5) > 0.3 && count < 6) { 
         if (!forward) {
             move(0.5);
+            turn(-2);
             forward = true;
         }
         else {
             move(-1);
+            turn(3);
             forward = false;
         }
         count++;
@@ -188,7 +190,7 @@ void milestone2(void){
         move(2);
         turn(87); //turn 
         move(-12.7); //press the humidifier button
-    } else{
+    } else {
         //blue
         LCD.Clear(BLUE);
         turn(-87); //turn backwards
