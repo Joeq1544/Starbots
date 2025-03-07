@@ -183,14 +183,14 @@ void milestone2(void){
     LCD.WriteLine(CdS_cell.Value());
     if(CdS_cell.Value() < 1.65) {
         //red
-        LCD.WriteLine("RED");
+        LCD.Clear(RED);
         turn(87); //turn 
         move(2);
         turn(87); //turn 
         move(-12.7); //press the humidifier button
     } else{
         //blue
-        LCD.WriteLine("BLUE");
+        LCD.Clear(BLUE);
         turn(-87); //turn backwards
         move(3);  
         turn(-87); //turn  
