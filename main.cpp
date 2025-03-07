@@ -119,7 +119,7 @@ void turn(double angle){
     //Turn off motors
     right_motor.Stop();
     left_motor.Stop();
-    Sleep(0.5);
+    Sleep(0.1);
 }
 
 /*Code for Milestone 1.
@@ -157,51 +157,40 @@ void milestone2(void){
 
     turn(-90); 
     move(6.4); //move towards ramp
-    turn(-35);
+    turn(-34);
     move(31); //up the ramp
-    turn(-86); //turn towards humidifier buttons
-    move(10); //Move towards humidifier buttons
+    turn(-87); //turn towards humidifier buttons
 
-    //TODO: line up to read the light
-    Sleep(1.0);
+    move(9.5);
 
     bool forward = false;
-    int count = 0;
-    while (fabs(CdS_cell.Value() - 2.0) > 0.2 && fabs(CdS_cell.Value() - 1.5) > 0.3 && count < 6) { 
-        if (!forward) {
-            move(0.5);
-            turn(-2);
-            forward = true;
-        }
-        else {
-            move(-1);
-            turn(3);
-            forward = false;
-        }
-        count++;
+    int countHumidifierButton = 0;
+    while (fabs(CdS_cell.Value() - 2.1) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 5) { 
+        move(0.1);
+        countHumidifierButton++;
     }
 
     // red or blue
     LCD.WriteLine(CdS_cell.Value());
-    if(CdS_cell.Value() < 1.65) {
+    if(CdS_cell.Value() < 1.6) {
         //red
         LCD.Clear(RED);
         turn(87); //turn 
         move(2);
         turn(87); //turn 
-        move(-12.7); //press the humidifier button
+        move(-12.6); //press the humidifier button
     } else {
         //blue
         LCD.Clear(BLUE);
         turn(-87); //turn backwards
         move(3);  
         turn(-87); //turn  
-        move(-12.7); //press the humidifier button
+        move(-12.5); //press the humidifier button
  
     }
     move(24);
     turn(90);
-    move(40);
+    move(45);
 
 
 }
