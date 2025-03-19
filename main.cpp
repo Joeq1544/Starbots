@@ -28,6 +28,7 @@ void turn(double angle);
 
 int main(void)
 {
+    RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
     //Turn testing
