@@ -25,6 +25,7 @@ void setMotorSpeed(int leftSpeed, int rightSpeed);
 void move(double inches);
 void milestone2(void);
 void turn(double angle);
+void milestone3(void);
 
 int main(void)
 {
@@ -40,8 +41,9 @@ int main(void)
     //     turn(-90);
     // }
 
-    //milestone2();
-    milestone2();
+    //milestone3();
+    while(!LCD.Touch(&x,&y)){};
+    milestone3();
 
     //for debugging
     while (true) {
@@ -194,4 +196,20 @@ void milestone2(void){
     move(45);
 
 
+}
+
+void milestone3(void){
+    move(-29); //move backwards toward window
+    turn(-45); //turn so that robot is parallel to window
+    move(-3); //makes sure the robot is fully touching the back wall
+    move(15); //opens the window
+    move (-5); //move backward 
+    turn(45); // turn back towards start
+    move(15); //move closer to start
+    turn(-45); //turn towards wall
+    move(5); //move close to the wall but not touching it so there's room for turning
+    turn(-45); //turn towards the ramp
+    move(15); //move up the ramp 
+    turn(-45); //turn towards the handle on the window
+    move(19); //move towards the handle, closing it
 }
