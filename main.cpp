@@ -26,11 +26,17 @@ void move(double inches);
 void milestone2(void);
 void turn(double angle);
 void milestone3(void);
+void powerMove(void);
 
 int main(void)
 {
-    RCS.InitializeTouchMenu("1020C6GIQ");
+    // RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
+
+    // do{
+    //     LCD.WriteLine(CdS_cell.Value());
+    //     Sleep(0.1);    
+    // } while (CdS_cell.Value() > 1.7);
 
     //Turn testing
     // while(true){
@@ -42,17 +48,19 @@ int main(void)
     // }
 
     //milestone3();
+    while (true) {
     while(!LCD.Touch(&x,&y)){};
     milestone3();
+    }
 
     //for debugging
-    while (true) {
-        if (LCD.Touch(&x, &y)) {
-            LCD.WriteLine(left_encoder.Counts());
-            LCD.WriteLine(right_encoder.Counts());
-            Sleep(1);
-        }
-    }
+    // while (true) {
+    //     if (LCD.Touch(&x, &y)) {
+    //         LCD.WriteLine(left_encoder.Counts());
+    //         LCD.WriteLine(right_encoder.Counts());
+    //         Sleep(1);
+    //     }
+    // }
 
     return 0;
 
@@ -62,6 +70,38 @@ int main(void)
 void setMotorSpeed(int leftSpeed, int rightSpeed){
     right_motor.SetPercent(rightSpeed);
     left_motor.SetPercent(leftSpeed);
+}
+
+void powerMove(double inches, double speedOfLeftMotor, double speedOfRightMotor) {
+    //Convert inches to counts
+    int counts=(abs(inches) * 318)/(3.0 * PI);
+
+    //Reset encodor counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+
+    float rightSpeed = (11.5 / Battery.Voltage()) * speedOfRightMotor;
+    float leftSpeed = (11.5 / Battery.Voltage()) * speedOfLeftMotor;
+
+
+    if(inches > 0)
+    {
+        setMotorSpeed(leftSpeed, rightSpeed);
+    }
+    else{
+        setMotorSpeed(-leftSpeed, -rightSpeed);
+    }
+    
+    //Motors run while the average of the left and right encoder is less than counts
+    while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
+
+    //Turn off motors once desired drive length is achieved
+    left_motor.Stop();
+    right_motor.Stop();
+
+    //Sleep .5 seconds as to not damage motors
+    Sleep(.5);
+
 }
 
 //Positive inches moves forward, negative inches moves backwards.
@@ -153,10 +193,6 @@ void milestone2(void){
 
     //start light
 
-    do{
-        LCD.WriteLine(CdS_cell.Value());
-        Sleep(0.1);    
-    } while (CdS_cell.Value() > 1.7);
 
     turn(-90); 
     move(6.4); //move towards ramp
@@ -199,17 +235,19 @@ void milestone2(void){
 }
 
 void milestone3(void){
-    move(-29); //move backwards toward window
+    move(-24); //move backwards toward window
     turn(-45); //turn so that robot is parallel to window
-    move(-3); //makes sure the robot is fully touching the back wall
-    move(15); //opens the window
-    move (-5); //move backward 
+    move(-6);
+    turn(-7);
+    powerMove(12, 50, 40); //opens the window
+    
+    move(-5); //move backward 
     turn(45); // turn back towards start
-    move(15); //move closer to start
-    turn(-45); //turn towards wall
-    move(5); //move close to the wall but not touching it so there's room for turning
-    turn(-45); //turn towards the ramp
-    move(15); //move up the ramp 
-    turn(-45); //turn towards the handle on the window
-    move(19); //move towards the handle, closing it
+    move(20); //move closer to start
+    turn(-40); //turn towards wall
+    move(10); //move close to the wall but not touching it so there's room for turning
+    turn(-90); //turn towards the ramp
+    powerMove(25, 50, 50); //move up the ramp 
+    turn(-85); //turn towards the handle on the window
+    move(15); //move towards the handle, closing it
 }
