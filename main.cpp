@@ -30,13 +30,9 @@ void powerMove(void);
 
 int main(void)
 {
-    // RCS.InitializeTouchMenu("1020C6GIQ");
+    RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-    // do{
-    //     LCD.WriteLine(CdS_cell.Value());
-    //     Sleep(0.1);    
-    // } while (CdS_cell.Value() > 1.7);
 
     //Turn testing
     // while(true){
@@ -49,7 +45,10 @@ int main(void)
 
     //milestone3();
     while (true) {
-    while(!LCD.Touch(&x,&y)){};
+        do{
+            LCD.WriteLine(CdS_cell.Value());
+            Sleep(0.1);    
+        } while (CdS_cell.Value() > 1.7);
     milestone3();
     }
 
