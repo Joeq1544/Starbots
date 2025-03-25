@@ -30,6 +30,7 @@ void powerMove(void);
 
 int main(void)
 {
+    //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
