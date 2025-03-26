@@ -7,6 +7,7 @@
 #include <FEHBattery.h>
 #include <math.h>
 #include <time.h>
+#include <cassert>
 
 
 FEHMotor right_motor(FEHMotor::Motor1,9.0); 
@@ -147,12 +148,15 @@ void turn(double angle){
 This is a function that would take an input of degrees to turn
 
     @var degrees
-            degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn
+            degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn.
+            Degrees must be between the minimum and maximum degree.
 */
 void verticalServo(double degrees) {
-    //random nums rn
-    servo.SetMin(500);
-    servo.SetMax(2500);
+    int max = 0;
+    int min = 0;
+    assert(degrees < max && degrees > min);
+    servo.SetMin(max);
+    servo.SetMax(min);
 
     //Set arm servo to 0 degrees
     servo.SetDegree(degrees);
