@@ -35,33 +35,10 @@ int main(void)
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-
-    //Turn testing
-    // while(true){
-    //     while(!LCD.Touch(&x,&y)){};
-    //     turn(90);
-    //     LCD.ClearBuffer();
-    //     while(!LCD.Touch(&x,&y)){};
-    //     turn(-90);
-    // }
-
-    //milestone3();
-    while (true) {
-        do{
-            LCD.WriteLine(CdS_cell.Value());
-            Sleep(0.1);    
-        } while (CdS_cell.Value() > 1.7);
-    milestone3();
+    //Waits for the light to turn red and then calls milestone4();
+    while (CdS_cell.Value() > 1.7) {
+    milestone4();
     }
-
-    //for debugging
-    // while (true) {
-    //     if (LCD.Touch(&x, &y)) {
-    //         LCD.WriteLine(left_encoder.Counts());
-    //         LCD.WriteLine(right_encoder.Counts());
-    //         Sleep(1);
-    //     }
-    // }
 
     return 0;
 
