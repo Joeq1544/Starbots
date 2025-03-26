@@ -262,5 +262,19 @@ void milestone3(void){
     * BONUS 2: robot returns the correct lever back to up position after 5 seconds
     */
     void milestone4(void) {
-        
+        int lever = RCS.GetLever();
+
+        move(14);
+        turn(45);
+        move(4);
+        //0 left; 1 middle; 2 right
+        if (lever == 0) {
+
+        }
+        else if(lever == 1) {
+
+        }
+        else {
+
+        }
     }
