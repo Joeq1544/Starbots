@@ -172,8 +172,15 @@ This is a function that would take an input of degrees to turn
     @var degrees
             degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn
 */
-void turnAppleServo(double degrees) {
+void verticalServo(double degrees) {
+    //random nums rn
+    servo.SetMin(500);
+    servo.SetMax(2500);
 
+    //Set arm servo to 0 degrees
+    servo.SetDegree(degrees);
+
+    Sleep(.1);
 }
 
 /*
