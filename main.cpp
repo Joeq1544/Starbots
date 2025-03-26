@@ -166,6 +166,26 @@ void turn(double angle){
     Sleep(0.1);
 }
 
+/*
+This is a function that would take an input of degrees to turn
+
+    @var degrees
+            degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn
+*/
+void turnAppleServo(double degrees) {
+
+}
+
+/*
+    Function to allow robot to line follow with a given amount of inches.
+
+        @var inches
+            amount of inches that the robot will move for the line following
+*/
+void lineFollowMove(double inches) {
+
+}
+
 /*Code for Milestone 1.
     In this checkpoint, the robot must go from one edge to the other. 
     Then, must go up the ramp. Bonus points for going back down.
