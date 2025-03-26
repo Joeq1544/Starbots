@@ -21,11 +21,12 @@ AnalogInputPin CdS_cell(FEHIO::P0_1);
 #define PI 3.14159265359
 
 void milestone1(void);
+void milestone2(void);
+void milestone3(void);
+void milestone4(void);
 void setMotorSpeed(int leftSpeed, int rightSpeed);
 void move(double inches);
-void milestone2(void);
 void turn(double angle);
-void milestone3(void);
 void powerMove(void);
 
 int main(void)
@@ -251,3 +252,15 @@ void milestone3(void){
     turn(-85); //turn towards the handle on the window
     move(15); //move towards the handle, closing it
 }
+
+    /*
+    * removes bucket of apples from stump
+    * deposits apples on crate or table
+    * flips any lever to the down position
+    * returns that lever back to up position
+    * BONUS 1: flips the correct lever to the down position
+    * BONUS 2: robot returns the correct lever back to up position after 5 seconds
+    */
+    void milestone4(void) {
+        
+    }
