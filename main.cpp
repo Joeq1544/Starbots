@@ -44,7 +44,7 @@ int main(void)
     float x,y;
 
     //initial calibration
-    servo.touchCalibration();
+    vertical_servo.TouchCalibrate();
 
     //Waits for the light to turn red and then calls milestone4();
     while (CdS_cell.Value() > 1.7) {
@@ -164,14 +164,14 @@ This is a function that would take an input of degrees to turn
             Degrees must be between the minimum and maximum degree.
 */
 void verticalServo(double degrees) {
-    int max = 0;
-    int min = 0;
+    int max = 2200;
+    int min = 810;
     assert(degrees < max && degrees > min);
-    servo.SetMin(max);
-    servo.SetMax(min);
+    vertical_servo.SetMin(max);
+    vertical_servo.SetMax(min);
 
     //Set arm servo to 0 degrees
-    servo.SetDegree(degrees);
+    vertical_servo.SetDegree(degrees);
 
     Sleep(.1);
 }
