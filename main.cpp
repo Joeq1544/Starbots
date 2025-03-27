@@ -27,6 +27,9 @@ FEHServo vertical_servo(FEHServo::Servo0);
 
 #define MOTORPOWER 35
 #define PI 3.14159265359
+#define SERVO_MAX 2200
+#define SERVO_MIN 800
+
 
 void milestone1(void);
 void milestone2(void);
@@ -36,23 +39,30 @@ void setMotorSpeed(int leftSpeed, int rightSpeed);
 void move(double inches);
 void turn(double angle);
 void powerMove(void);
+void verticalServo(double degrees);
 
 int main(void)
 {
+    //set the servos min and max values
+    vertical_servo.SetMin(SERVO_MIN);
+    vertical_servo.SetMax(SERVO_MAX);
+    
     //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-    //initial calibration
-    vertical_servo.TouchCalibrate();
+    verticalServo(140);
 
     //Waits for the light to turn red and then calls milestone4();
-    while (CdS_cell.Value() > 1.7) {
+    //0.570 or below 1 is red
+    //1.28 or between 1 and 2 is blue
+    //3.2 or above 3 is nothing
+    while (CdS_cell.Value() > 0.75) {
+    }    
     milestone4();
-    }
+
 
     return 0;
-
 }
 
 
@@ -164,15 +174,10 @@ This is a function that would take an input of degrees to turn
             Degrees must be between the minimum and maximum degree.
 */
 void verticalServo(double degrees) {
-    int max = 2200;
-    int min = 810;
-    assert(degrees < max && degrees > min);
-    vertical_servo.SetMin(max);
-    vertical_servo.SetMax(min);
-
     //Set arm servo to 0 degrees
+    LCD.Clear(BLACK);
+    LCD.WriteLine(degrees);
     vertical_servo.SetDegree(degrees);
-
     Sleep(.1);
 }
 
@@ -284,9 +289,14 @@ void milestone3(void){
     void milestone4(void) {
         int lever = RCS.GetLever();
 
-        move(14);
-        turn(45);
-        move(4);
+        turn(10);
+        move(17.5); //move towards apples
+        turn(-45); //turn towards apples
+        verticalServo(30); //move servo to align with apple holder
+        move(4); //move to pick up apples
+        verticalServo(20);
+        move(-10);
+
         //0 left; 1 middle; 2 right
         if (lever == 0) {
 
