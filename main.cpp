@@ -51,7 +51,7 @@ int main(void)
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-    verticalServo(140);
+    verticalServo(100);
 
     //Waits for the light to turn red and then calls milestone4();
     //0.570 or below 1 is red
@@ -290,12 +290,14 @@ void milestone3(void){
         int lever = RCS.GetLever();
 
         turn(10);
-        move(17.5); //move towards apples
-        turn(-45); //turn towards apples
-        verticalServo(30); //move servo to align with apple holder
-        move(4); //move to pick up apples
-        verticalServo(20);
-        move(-10);
+        move(20); //move towards apples
+        turn(-57); //turn towards apples
+        verticalServo(20); //move servo to align with apple holder
+        Sleep(.5);
+        move(3.75); //move to pick up apples
+        verticalServo(5);
+        Sleep(.5);
+        move(-5);
 
         //0 left; 1 middle; 2 right
         if (lever == 0) {
