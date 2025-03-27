@@ -16,7 +16,14 @@ FEHMotor left_motor(FEHMotor::Motor0,9.0);
 DigitalEncoder left_encoder(FEHIO::P0_0);
 DigitalEncoder right_encoder(FEHIO::P3_5);
 
+// Declarations for analog optosensors
+AnalogInputPin right_opto(FEHIO::P2_0);
+AnalogInputPin middle_opto(FEHIO::P2_1);
+AnalogInputPin left_opto(FEHIO::P2_2);
+
 AnalogInputPin CdS_cell(FEHIO::P0_1);
+
+FEHServo vertical_servo(FEHServo::Servo0); 
 
 #define MOTORPOWER 35
 #define PI 3.14159265359
@@ -36,6 +43,9 @@ int main(void)
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
+    //initial calibration
+    servo.touchCalibration();
+
     //Waits for the light to turn red and then calls milestone4();
     while (CdS_cell.Value() > 1.7) {
     milestone4();
@@ -44,6 +54,8 @@ int main(void)
     return 0;
 
 }
+
+
 
 //Sets the left and right motor speed
 void setMotorSpeed(int leftSpeed, int rightSpeed){
