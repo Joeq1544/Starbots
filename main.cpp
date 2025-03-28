@@ -318,7 +318,14 @@ void milestone3(void){
         Sleep(0.3);
         move(-5);
 
+        /*
+        NOT CHECKED
+        */
 
+        move(-10); //move away from apple table
+        turn(-45); //turn towards levers
+        move(7); //move to be in front of all levers
+        
 
         //0 left; 1 middle; 2 right
         if (lever == 0) {
