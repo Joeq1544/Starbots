@@ -47,10 +47,9 @@ int main(void)
     //set the servos min and max values
     vertical_servo.SetMin(SERVO_MIN);
     vertical_servo.SetMax(SERVO_MAX);
-
     
     //initialize RCS for the proteus for lever and kill switch
-    RCS.InitializeTouchMenu("1020C6GIQ");
+    // RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
     verticalServo(180);
@@ -129,7 +128,10 @@ void move(double inches){
     }
     
     //Motors run while the average of the left and right encoder is less than counts
-    while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){}
+    while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){
+        Sleep(0.2);
+    }
+
 
     //Turn off motors once desired drive length is achieved
     left_motor.Stop();
@@ -289,42 +291,40 @@ void milestone3(void){
     void milestone4(void) {
         int lever = RCS.GetLever();
 
-        turn(10);
-        move(20); //move towards apples
-        turn(-55); //turn towards apples
-        verticalServo(36); //move servo to align with apple holder
+        turn(9);
+        move(19); //move towards apples
+        turn(-49); //turn towards apples
+        verticalServo(65); //move servo to align with apple holder
         Sleep(.5);
         move(4.5); //move to pick up apples
-        verticalServo(22); //lift apples slightly higher so they don't fall off
-        Sleep(.5); //sleep to make sure apples aren't swinging on handle
-        move(-5); //move backwards away from apples
-
-        turn(45); //turn to face window
-        move(-5);
+        move(-3.6); //move backwards away from apples
+   
+        turn(40); //turn to face window
+        move(-4);
         turn(45);
-        powerMove(-4, MOTORPOWER-2, MOTORPOWER); //move slightly backward
-        turn(-110); //turn to face wall
-        move(-18); //move towards wall
-        move(1.5);
-        turn(110); //turn to face ramp
-        powerMove(35, MOTORPOWER+4, MOTORPOWER); //move up the ramp
+        move(-4); //move slightly backward
+        turn(-105); //turn to face wall
+        move(-16); //move towards wall
+        move(1.2);
+        turn(92); //turn to face ramp
+
+        powerMove(33, MOTORPOWER + 1, MOTORPOWER); //move up the ramp
         turn(-90); //turn to left to go around table
-        move(3.5); //move towards window
-        turn(90); //turn towards smaller table
+        move(3); //move towards window
+        turn(55); //turn towards levers
+        move(6); //move towards levers
+
         verticalServo(2);
-        powerMove(15, MOTORPOWER + 3, MOTORPOWER); //move to get the apple on the table
-        turn(8);
-        verticalServo(60); //drop apples off on lower table
-        Sleep(0.3);
-        move(-5);
+        Sleep(.2);
+        move(3);
+        verticalServo(160);
+        Sleep(5.5);
+        move(-3);
+        verticalServo(180);
+        Sleep(.2);
+        move(4);
+        verticalServo(2);
 
-        /*
-        NOT CHECKED
-        */
-
-        move(-10); //move away from apple table
-        turn(-45); //turn towards levers
-        move(7); //move to be in front of all levers
         
 
         //0 left; 1 middle; 2 right
