@@ -35,6 +35,7 @@ void milestone1(void);
 void milestone2(void);
 void milestone3(void);
 void milestone4(void);
+void milestone5(void);
 void setMotorSpeed(int leftSpeed, int rightSpeed);
 void move(double inches);
 void turn(double angle);
@@ -66,7 +67,9 @@ int main(void)
     }    
     milestone4();
 
-
+    
+    bool checkLever = RCS.isLeverFlipped();
+    int checkWindow = RCS.isWindowOpen();
     return 0;
 }
 
@@ -348,6 +351,6 @@ void milestone3(void){
         }
     }
 
-    void milestone4(void) {
-        
+    void milestone5(void) {
+
     }
