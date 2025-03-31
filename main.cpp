@@ -41,6 +41,10 @@ void turn(double angle);
 void powerMove(void);
 void verticalServo(double degrees);
 
+
+//isWindowOpen()
+/* isLeverFlipped() fertilizer lever: 1 if any lever is pressed down, 0 otherwise */
+
 int main(void)
 {
 
@@ -328,13 +332,22 @@ void milestone3(void){
         
 
         //0 left; 1 middle; 2 right
-        if (lever == 0) {
-
+        switch (lever)
+        {
+        case 0:
+            /* code */
+            break;
+        case 1:
+            /* code */
+        break;
+        case 2:
+            /* code */
+        break;
+        default:
+            break;
         }
-        else if(lever == 1) {
+    }
 
-        }
-        else {
-
-        }
+    void milestone4(void) {
+        
     }
