@@ -48,6 +48,17 @@ void verticalServo(double degrees);
 
 int main(void)
 {
+    while (true) {
+        right_motor.SetPercent(10);
+        Sleep(2.0);
+        right_motor.SetPercent(0);
+        Sleep(1.0);
+        left_motor.SetPercent(10);
+        Sleep(1.0);
+        left_motor.SetPercent(0);
+        Sleep(1.0);
+
+    }
 
     //set the servos min and max values
     vertical_servo.SetMin(SERVO_MIN);
@@ -65,9 +76,8 @@ int main(void)
     //3.2 or above 3 is nothing
     while (CdS_cell.Value() > 0.75) {
     }    
-    milestone4();
+    milestone5();
 
-    
     bool checkLever = RCS.isLeverFlipped();
     int checkWindow = RCS.isWindowOpen();
     return 0;
@@ -136,7 +146,6 @@ void move(double inches){
     
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){
-        Sleep(0.2);
     }
 
 
@@ -352,5 +361,8 @@ void milestone3(void){
     }
 
     void milestone5(void) {
-
+        turn(-15);
+        move(15);
+        turn(-40);
+        move(4);     
     }
