@@ -24,6 +24,8 @@ AnalogInputPin left_opto(FEHIO::P2_2);
 AnalogInputPin CdS_cell(FEHIO::P0_1);
 
 FEHServo vertical_servo(FEHServo::Servo0); 
+FEHServo hor_servo(FEHServo::Servo7); 
+
 
 #define MOTORPOWER 35
 #define PI 3.14159265359
@@ -41,6 +43,7 @@ void move(double inches);
 void turn(double angle);
 void powerMove(void);
 void verticalServo(double degrees);
+void horizontalServo(double degrees);
 
 
 //isWindowOpen()
@@ -48,27 +51,27 @@ void verticalServo(double degrees);
 
 int main(void)
 {
-    while (true) {
-        right_motor.SetPercent(10);
-        Sleep(2.0);
-        right_motor.SetPercent(0);
-        Sleep(1.0);
-        left_motor.SetPercent(10);
-        Sleep(1.0);
-        left_motor.SetPercent(0);
-        Sleep(1.0);
-
-    }
-
     //set the servos min and max values
     vertical_servo.SetMin(SERVO_MIN);
-    vertical_servo.SetMax(SERVO_MAX);
+    vertical_servo.SetMax(SERVO_MAX);    
+
+    while (true) {
+        move(5);
+        Sleep(1.0);
+        turn(90);
+        Sleep(1.0);
+        move(5);
+        Sleep(1.0);
+        turn(90);
+        Sleep(1.0);
+    }
+
     
     //initialize RCS for the proteus for lever and kill switch
     // RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-    verticalServo(180);
+
 
     //Waits for the light to turn red and then calls milestone4();
     //0.570 or below 1 is red
@@ -196,6 +199,19 @@ This is a function that would take an input of degrees to turn
 void verticalServo(double degrees) {
     //Set arm servo to 0 degrees
     vertical_servo.SetDegree(degrees);
+    Sleep(.1);
+}
+
+/*
+This is a function that would take an input of degrees to turn
+
+    @var degrees
+            degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn.
+            Degrees must be between the minimum and maximum degree.
+*/
+void horizontalServo(double degrees) {
+    //Set arm servo to 0 degrees
+    hor_servo.SetDegree(degrees);
     Sleep(.1);
 }
 
@@ -360,9 +376,6 @@ void milestone3(void){
         }
     }
 
-    void milestone5(void) {
-        turn(-15);
-        move(15);
-        turn(-40);
-        move(4);     
+    void milestone5(void) {   
+        
     }
