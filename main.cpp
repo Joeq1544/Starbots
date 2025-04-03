@@ -377,5 +377,5 @@ void milestone3(void){
     }
 
     void milestone5(void) {   
-        
+        turn(90);
     }
