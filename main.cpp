@@ -29,8 +29,12 @@ FEHServo hor_servo(FEHServo::Servo7);
 
 #define MOTORPOWER 35
 #define PI 3.14159265359
-#define SERVO_MAX 2200
-#define SERVO_MIN 800
+#define VERTICAL_SERVO_MAX 2200
+#define VERTICAL_SERVO_MIN 815
+#define HORIZONTAL_SERVO_MAX 2200
+#define HORIZONTAL_SERVO_MIN 815
+
+
 
 
 void milestone1(void);
@@ -52,33 +56,42 @@ void horizontalServo(double degrees);
 int main(void)
 {
     //set the servos min and max values
-    vertical_servo.SetMin(SERVO_MIN);
-    vertical_servo.SetMax(SERVO_MAX);    
+    vertical_servo.SetMin(VERTICAL_SERVO_MIN);
+    vertical_servo.SetMax(VERTICAL_SERVO_MAX);    
+    hor_servo.SetMin(HORIZONTAL_SERVO_MIN);
+    hor_servo.SetMax(HORIZONTAL_SERVO_MAX); 
 
-    while (true) {
-        move(5);
-        Sleep(1.0);
-        turn(90);
-        Sleep(1.0);
-        move(5);
-        Sleep(1.0);
-        turn(90);
-        Sleep(1.0);
-    }
+    /* Testing for correct move distance and turns*/
+    // while (true) {
+    //     move(5);
+    //     Sleep(1.0);
+    //     turn(90);
+    //     Sleep(1.0);
+    //     move(5);
+    //     Sleep(1.0);
+    //     turn(90);
+    //     Sleep(1.0);
+    // }
 
-    
+    /* Testing for range of both servos */
+    // while (true) {
+    //     verticalServo(0);
+    //     horizontalServo(0);
+    //     Sleep(1.0);
+    //     verticalServo(180);
+    //     horizontalServo(180);
+    //     Sleep(1.0);
+    // }
     //initialize RCS for the proteus for lever and kill switch
     // RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
+    verticalServo(0);
+    horizontalServo(0);
 
-
-    //Waits for the light to turn red and then calls milestone4();
-    //0.570 or below 1 is red
-    //1.28 or between 1 and 2 is blue
-    //3.2 or above 3 is nothing
+    //Waits for the light to turn red and then calls milestone5();
     while (CdS_cell.Value() > 0.75) {
-    }    
+    }
     milestone5();
 
     bool checkLever = RCS.isLeverFlipped();
@@ -149,6 +162,8 @@ void move(double inches){
     
     //Motors run while the average of the left and right encoder is less than counts
     while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){
+        // LCD.WriteLine(left_encoder.Counts());
+        // LCD.WriteLine(right_encoder.Counts());
     }
 
 
@@ -377,5 +392,29 @@ void milestone3(void){
     }
 
     void milestone5(void) {   
-        turn(90);
+        move(1.5); //move forward from start
+        turn(-70); //turn closer to the wall
+        move(6.5); //move and drive into wall
+        turn(20); //turn a little bit to align with the compose bit turner thing
+        move(1.5); //move into it
+        horizontalServo(165); //turn the compost bin
+        Sleep(0.5); //sleep
+        move(-2); //move back to reset the servo
+        turn(-1.2);
+        Sleep(0.5); //sleep
+        horizontalServo(30); //turn servo back
+        Sleep(0.5); //sleep
+        move(2); //move forward
+        horizontalServo(180); //turn compose bin again
+
+        Sleep(0.5); //sleep
+        move(-2); //move backward
+        turn(-1);
+        Sleep(0.5); //sleep
+        horizontalServo(50); //turn back
+        Sleep(0.5); //sleep
+        move(2); //move forward
+        horizontalServo(175); //turn compost bin final time
+        hor_servo.Off();
+
     }
