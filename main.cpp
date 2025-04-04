@@ -83,7 +83,7 @@ int main(void)
     //     Sleep(1.0);
     // }
     //initialize RCS for the proteus for lever and kill switch
-    // RCS.InitializeTouchMenu("1020C6GIQ");
+    RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
     verticalServo(0);
@@ -414,7 +414,30 @@ void milestone3(void){
         horizontalServo(50); //turn back
         Sleep(0.5); //sleep
         move(2); //move forward
-        horizontalServo(175); //turn compost bin final time
-        hor_servo.Off();
+        horizontalServo(180); //turn compost bin final time
+        Sleep(0.5);
 
+        horizontalServo(10); //turn compost bin 
+        Sleep(0.6);
+        move(-2); //move backward
+        turn(-1);
+        horizontalServo(160); //turn back
+        Sleep(0.5); //sleep
+        move(2); //move forward
+        horizontalServo(0); //turn compost bin 
+        Sleep(0.6);
+
+        move(-2); //move backward
+        Sleep(0.5); //sleep
+        turn(-1);
+        horizontalServo(163); //turn back
+        Sleep(0.5); //sleep
+        move(2); //move forward
+        horizontalServo(0); //turn compost bin 
+        Sleep(0.6);
+
+        hor_servo.Off();
+        move(-2);
+        turn(7);
+        move(-15);
     }
