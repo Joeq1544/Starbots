@@ -48,6 +48,13 @@ void turn(double angle);
 void powerMove(void);
 void verticalServo(double degrees);
 void horizontalServo(double degrees);
+void finalStart(void);
+void compostBin(void);
+void openWindow(void);
+void apples(void);
+void closeWindow(void);
+void buttons(void);
+void levers(void);
 
 
 //isWindowOpen()
@@ -57,11 +64,15 @@ int main(void)
 {
     //set the servos min and max values
     vertical_servo.SetMin(VERTICAL_SERVO_MIN);
-    vertical_servo.SetMax(VERTICAL_SERVO_MAX);    
+    vertical_servo.SetMax(VERTICAL_SERVO_MAX);
     hor_servo.SetMin(HORIZONTAL_SERVO_MIN);
-    hor_servo.SetMax(HORIZONTAL_SERVO_MAX); 
+    hor_servo.SetMax(HORIZONTAL_SERVO_MAX);
+    //set the servos both to 0
+    verticalServo(0);
+    horizontalServo(0);
 
     /* Testing for correct move distance and turns*/
+
     // while (true) {
     //     move(5);
     //     Sleep(1.0);
@@ -74,6 +85,7 @@ int main(void)
     // }
 
     /* Testing for range of both servos */
+
     // while (true) {
     //     verticalServo(0);
     //     horizontalServo(0);
@@ -82,20 +94,18 @@ int main(void)
     //     horizontalServo(180);
     //     Sleep(1.0);
     // }
+
     //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-    verticalServo(0);
-    horizontalServo(0);
+
 
     //Waits for the light to turn red and then calls milestone5();
     while (CdS_cell.Value() > 0.75) {
     }
-    milestone5();
+    finalStart();
 
-    bool checkLever = RCS.isLeverFlipped();
-    int checkWindow = RCS.isWindowOpen();
     return 0;
 }
 
@@ -440,4 +450,86 @@ void milestone3(void){
         move(-2);
         turn(7);
         move(-15);
+    }
+
+    /* 
+        OFFICIAL CODE FOR FINAL ROBOT
+    */
+
+    void finalStart(void) {
+        //hit start button
+        move(-2);
+        Sleep(0.4);
+        move(2);
+
+        //Start with tasks
+        compostBin();
+        //write code to position robot near/in front of window
+        openWindow();
+        //once opened window, write code that goes to apples
+        apples();
+        //write code to move towards closing window
+        closeWindow();
+        //write code that moves towards the buttons
+        buttons();
+        //write code that moves towards the levers
+        levers();
+        //write code that hits the stop button
+    }
+
+    void compostBin(void){
+        move(1.5); //move forward from start
+        turn(-70); //turn closer to the wall
+        move(6.5); //move and drive into wall
+        turn(20); //turn a little bit to align with the compose bit turner thing
+        move(1.5); //move into it
+        horizontalServo(165); //turn the compost bin
+        Sleep(0.5); //sleep
+
+    }
+
+    void openWindow(void) {
+    //int checkWindow = RCS.isWindowOpen();
+
+    }
+
+    void apples(void) {
+
+    }
+
+    void closeWindow(void) {
+    //int checkWindow = RCS.isWindowOpen();
+
+    }
+
+    void buttons(void) {
+
+        bool forward = false;
+        int countHumidifierButton = 0;
+        while (fabs(CdS_cell.Value() - 2.1) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 5) { 
+            move(0.1);
+            countHumidifierButton++;
+        }
+    }
+    
+    void levers(void) {
+        // bool checkLever = RCS.isLeverFlipped();
+
+
+        int lever = RCS.GetLever();
+
+        //0 left; 1 middle; 2 right
+        switch (lever) {
+        case 0:
+            /* code */
+            break;
+        case 1:
+            /* code */
+        break;
+        case 2:
+            /* code */
+        break;
+        default:
+            break;
+        }
     }
