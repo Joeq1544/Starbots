@@ -68,7 +68,7 @@ int main(void)
     hor_servo.SetMin(HORIZONTAL_SERVO_MIN);
     hor_servo.SetMax(HORIZONTAL_SERVO_MAX);
     //set the servos both to 0
-    verticalServo(0);
+    verticalServo(180);
     horizontalServo(0);
 
     /* Testing for correct move distance and turns*/
@@ -98,8 +98,6 @@ int main(void)
     //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
-
-
 
     //Waits for the light to turn red and then calls milestone5();
     while (CdS_cell.Value() > 0.75) {
@@ -458,14 +456,20 @@ void milestone3(void){
 
     void finalStart(void) {
         //hit start button
-        move(-2);
-        Sleep(0.4);
-        move(2);
+        move(-1);
+        Sleep(0.2);
+        move(1.5);
 
-        //Start with tasks
+        /* Start with tasks */
         compostBin();
-        //write code to position robot near/in front of window
+        move(-3);
+        turn(90);
+        move(-4);
+        move(15);
+        turn(-20);
         openWindow();
+        turn(-90);
+        move(7);
         //once opened window, write code that goes to apples
         apples();
         //write code to move towards closing window
@@ -478,18 +482,28 @@ void milestone3(void){
     }
 
     void compostBin(void){
-        move(1.5); //move forward from start
-        turn(-70); //turn closer to the wall
-        move(6.5); //move and drive into wall
-        turn(20); //turn a little bit to align with the compose bit turner thing
+        LCD.Clear(BLACK);
+        LCD.WriteLine("Compost Bin");
+
+        turn(-80); //turn closer to the wall
+        move(7); //move and drive into wall
+        turn(15); //turn a little bit to align with the compose bit turner thing
         move(1.5); //move into it
         horizontalServo(165); //turn the compost bin
         Sleep(0.5); //sleep
-
     }
 
     void openWindow(void) {
-    //int checkWindow = RCS.isWindowOpen();
+        LCD.Clear(BLACK);
+        LCD.WriteLine("Open Window");
+
+        move(7);
+        turn(25);
+        move(5);
+        powerMove(-8, 50, 50);
+        while(RCS.isWindowOpen() == 0) {
+            powerMove(-1, 60, 60);
+        }
 
     }
 
@@ -499,6 +513,10 @@ void milestone3(void){
 
     void closeWindow(void) {
     //int checkWindow = RCS.isWindowOpen();
+    // 0 – Window is closed
+    // 1 – Window is open
+
+
 
     }
 
@@ -514,6 +532,10 @@ void milestone3(void){
     
     void levers(void) {
         // bool checkLever = RCS.isLeverFlipped();
+        // 0 – Initial state OR some lever has been flipped back up
+        // 1 – At least one lever has been flipped down AND no lever has ever been flipped back up
+
+
 
 
         int lever = RCS.GetLever();
