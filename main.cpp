@@ -24,7 +24,7 @@ AnalogInputPin left_opto(FEHIO::P2_2);
 AnalogInputPin CdS_cell(FEHIO::P0_1);
 
 FEHServo vertical_servo(FEHServo::Servo0); 
-FEHServo hor_servo(FEHServo::Servo7); 
+FEHMotor hor_servo(FEHMotor::Motor2,5.0);   //hacked servo
 
 
 #define MOTORPOWER 35
@@ -65,11 +65,8 @@ int main(void)
     //set the servos min and max values
     vertical_servo.SetMin(VERTICAL_SERVO_MIN);
     vertical_servo.SetMax(VERTICAL_SERVO_MAX);
-    hor_servo.SetMin(HORIZONTAL_SERVO_MIN);
-    hor_servo.SetMax(HORIZONTAL_SERVO_MAX);
     //set the servos both to 0
     verticalServo(180);
-    horizontalServo(0);
 
     /* Testing for correct move distance and turns*/
 
@@ -86,14 +83,11 @@ int main(void)
 
     /* Testing for range of both servos */
 
-    // while (true) {
-    //     verticalServo(0);
-    //     horizontalServo(0);
-    //     Sleep(1.0);
-    //     verticalServo(180);
-    //     horizontalServo(180);
-    //     Sleep(1.0);
-    // }
+    hor_servo.SetPercent(10);
+    move(5);
+    while (true) {
+
+    }
 
     //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
@@ -232,9 +226,11 @@ This is a function that would take an input of degrees to turn
             degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn.
             Degrees must be between the minimum and maximum degree.
 */
-void horizontalServo(double degrees) {
+void horizontalServo(double seconds) {
     //Set arm servo to 0 degrees
-    hor_servo.SetDegree(degrees);
+    hor_servo.SetPercent(MOTORPOWER);
+    float t_now = TimeNow();
+    while(TimeNow()-t_now < seconds);
     Sleep(.1);
 }
 
@@ -444,7 +440,7 @@ void milestone3(void){
         horizontalServo(0); //turn compost bin 
         Sleep(0.6);
 
-        hor_servo.Off();
+        hor_servo.Stop();
         move(-2);
         turn(7);
         move(-15);
@@ -462,22 +458,34 @@ void milestone3(void){
 
         /* Start with tasks */
         compostBin();
+        LCD.Clear(BLACK);
+
         move(-3);
         turn(90);
         move(-4);
         move(15);
         turn(-20);
         openWindow();
+        LCD.Clear(BLACK);
+
         turn(-90);
         move(7);
         //once opened window, write code that goes to apples
         apples();
+        LCD.Clear(BLACK);
+
         //write code to move towards closing window
         closeWindow();
+        LCD.Clear(BLACK);
+
         //write code that moves towards the buttons
         buttons();
+        LCD.Clear(BLACK);
+
         //write code that moves towards the levers
         levers();
+        LCD.Clear(BLACK);
+
         //write code that hits the stop button
     }
 
@@ -489,7 +497,7 @@ void milestone3(void){
         move(7); //move and drive into wall
         turn(15); //turn a little bit to align with the compose bit turner thing
         move(1.5); //move into it
-        horizontalServo(165); //turn the compost bin
+        horizontalServo; //turn the compost bin
         Sleep(0.5); //sleep
     }
 
@@ -508,10 +516,15 @@ void milestone3(void){
     }
 
     void apples(void) {
+        LCD.Clear(BLACK);
+        LCD.WriteLine("apples");
 
     }
 
     void closeWindow(void) {
+        LCD.Clear(BLACK);
+        LCD.WriteLine("Closing Window");
+
     //int checkWindow = RCS.isWindowOpen();
     // 0 – Window is closed
     // 1 – Window is open
@@ -521,6 +534,8 @@ void milestone3(void){
     }
 
     void buttons(void) {
+        LCD.Clear(BLACK);
+        LCD.WriteLine("buttons");
 
         bool forward = false;
         int countHumidifierButton = 0;
@@ -531,6 +546,9 @@ void milestone3(void){
     }
     
     void levers(void) {
+        LCD.Clear(BLACK);
+        LCD.WriteLine("levers");
+
         // bool checkLever = RCS.isLeverFlipped();
         // 0 – Initial state OR some lever has been flipped back up
         // 1 – At least one lever has been flipped down AND no lever has ever been flipped back up
