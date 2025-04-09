@@ -88,6 +88,11 @@ int main(void)
     float x,y;
 
     //Waits for the light to turn red and then calls milestone5();
+    LCD.Clear(BLACK);
+    LCD.WriteLine("Waiting for touch");
+    while(!LCD.Touch(&x, &y)) {
+
+    }
     while (CdS_cell.Value() > 0.75) {
     }
     finalStart();
@@ -450,23 +455,25 @@ void milestone3(void){
     void finalStart(void) {
         //hit start button
         move(-1);
-        Sleep(0.2);
+        Sleep(0.1);
         move(2);
 
         /* Start with tasks */
         compostBin();
         LCD.Clear(BLACK);
 
-        move(-3);
+        move(-1.5);
         turn(90);
         move(-4);
-        move(15);
-        turn(-20);
+        move(16);
+        turn(-25);
         openWindow();
         LCD.Clear(BLACK);
 
         turn(-90);
         move(7);
+        turn(90);
+
         //once opened window, write code that goes to apples
         apples();
         LCD.Clear(BLACK);
@@ -490,10 +497,11 @@ void milestone3(void){
         LCD.Clear(BLACK);
         LCD.WriteLine("Compost Bin");
 
+        verticalServo(0);
         turn(-80); //turn closer to the wall
         move(6); //move and drive into wall
-        turn(15); //turn a little bit to align with the compose bit turner thing
-        move(1.5); //move into it
+        turn(21); //turn a little bit to align with the compose bit turner thing
+        move(2.5); //move into it
         horizontalServo(6.0); //turn the compost bin
         Sleep(0.5); //sleep
         horizontalServo(-6.0);
@@ -503,12 +511,19 @@ void milestone3(void){
         LCD.Clear(BLACK);
         LCD.WriteLine("Open Window");
 
-        move(5);
-        powerMove(-8, 50, 50);
+        move(10);
+        turn(-25);
+        move(9);
+        move(-4);
+        powerMove(-5, MOTORPOWER + 5, 50);
+        int count = 0;
         while(RCS.isWindowOpen() == 0) {
             powerMove(-1, 60, 60);
+            if (count % 3 == 0) {
+                move(0.5);
+            }
+            count++;
         }
-
     }
 
     void apples(void) {
