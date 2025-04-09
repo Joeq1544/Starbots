@@ -47,7 +47,7 @@ void move(double inches);
 void turn(double angle);
 void powerMove(void);
 void verticalServo(double degrees);
-void horizontalServo(double degrees);
+void horizontalServo(double seconds);
 void finalStart(void);
 void compostBin(void);
 void openWindow(void);
@@ -81,13 +81,6 @@ int main(void)
     //     Sleep(1.0);
     // }
 
-    /* Testing for range of both servos */
-
-    hor_servo.SetPercent(10);
-    move(5);
-    while (true) {
-
-    }
 
     //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
@@ -226,12 +219,11 @@ This is a function that would take an input of degrees to turn
             degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn.
             Degrees must be between the minimum and maximum degree.
 */
-void horizontalServo(double seconds) {
+void horizontalServo(double seconds, double speed) {
     //Set arm servo to 0 degrees
-    hor_servo.SetPercent(MOTORPOWER);
-    float t_now = TimeNow();
-    while(TimeNow()-t_now < seconds);
-    Sleep(.1);
+    hor_servo.SetPercent(speed);
+    Sleep(seconds);
+    hor_servo.SetPercent(0);
 }
 
 /*
@@ -494,10 +486,10 @@ void milestone3(void){
         LCD.WriteLine("Compost Bin");
 
         turn(-80); //turn closer to the wall
-        move(7); //move and drive into wall
+        move(6); //move and drive into wall
         turn(15); //turn a little bit to align with the compose bit turner thing
         move(1.5); //move into it
-        horizontalServo; //turn the compost bin
+        horizontalServo(4.0); //turn the compost bin
         Sleep(0.5); //sleep
     }
 
@@ -505,8 +497,6 @@ void milestone3(void){
         LCD.Clear(BLACK);
         LCD.WriteLine("Open Window");
 
-        move(7);
-        turn(25);
         move(5);
         powerMove(-8, 50, 50);
         while(RCS.isWindowOpen() == 0) {
