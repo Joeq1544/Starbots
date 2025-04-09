@@ -33,8 +33,15 @@ FEHMotor hor_servo(FEHMotor::Motor2,5.0);   //hacked servo
 #define VERTICAL_SERVO_MIN 815
 #define HORIZONTAL_SERVO_MAX 2200
 #define HORIZONTAL_SERVO_MIN 815
+#define left_threshold 1.9
+#define middle_threshold 1.9
+#define right_threshold 1.9
 
-
+enum DriveState{
+    GOMIDDLE,
+    GOLEFT,
+    GORIGHT
+};
 
 
 void milestone1(void);
@@ -236,14 +243,83 @@ void horizontalServo(double seconds) {
     hor_servo.SetPercent(0);
 }
 
-/*
-    Function to allow robot to line follow with a given amount of inches.
+void updateState(int *state)
+{
+    if(middle_opto.Value() > middle_threshold){
+        *state = GOMIDDLE;
+        // LCD.WriteLine("UMID");
+        // LCD.WriteLine(middle_opto.Value());
+    }
+    else if(left_opto.Value() > left_threshold)
+    {
+        *state = GOLEFT;
+        // LCD.WriteLine("ULEFT");
+        // LCD.WriteLine(left_opto.Value());
+    }
+    else if(right_opto.Value() > right_threshold)
+    {
+        *state = GORIGHT;
+        // LCD.WriteLine("URIGHT");
+        // LCD.WriteLine(right_opto.Value());
+    }
+    else
+    {
+        *state = GOMIDDLE;
+        // LCD.WriteLine("URIGHT");
+    }
+}
 
-        @var inches
-            amount of inches that the robot will move for the line following
-*/
-void lineFollowMove(double inches) {
+void moveLF(double inches){
+    //Convert inches to counts
+    int counts=(abs(inches) * 318)/(3.0 * PI);
 
+    //Reset encodor counts
+    right_encoder.ResetCounts();
+    left_encoder.ResetCounts();
+
+    float rightSpeed = (11.5 / Battery.Voltage()) * MOTORPOWER;
+    float leftSpeed = rightSpeed + 1;
+
+
+    if(inches < 0)
+    {
+        rightSpeed *= -1;
+        leftSpeed *= -1;
+    }
+    
+    int state = GOMIDDLE;
+    updateState(&state);
+    //Motors run while the average of the left and right encoder is less than counts
+    while((left_encoder.Counts() + right_encoder.Counts()) / 2.0 < counts){
+        LCD.WriteLine(state);
+        switch(state){
+            case GOMIDDLE:
+                right_motor.SetPercent(rightSpeed);
+                left_motor.SetPercent(leftSpeed);
+                break;
+            case GORIGHT:
+                right_motor.SetPercent(0);
+                left_motor.SetPercent(leftSpeed);
+                break;
+            case GOLEFT:
+                right_motor.SetPercent(rightSpeed);
+                left_motor.SetPercent(0);
+                break;
+            default:
+                break;
+        }
+        updateState(&state);
+        Sleep(.05);
+        LCD.Clear();
+    }
+
+
+    //Turn off motors once desired drive length is achieved
+    left_motor.Stop();
+    right_motor.Stop();
+
+    //Sleep .5 seconds as to not damage motors
+    Sleep(.5);
 }
 
 /*Code for Milestone 1.
@@ -466,7 +542,7 @@ void milestone3(void){
         turn(90);
         move(-4);
         move(16);
-        turn(-25);
+        turn(-30);
         openWindow();
         LCD.Clear(BLACK);
 
@@ -501,7 +577,7 @@ void milestone3(void){
         turn(-80); //turn closer to the wall
         move(6); //move and drive into wall
         turn(21); //turn a little bit to align with the compose bit turner thing
-        move(2.5); //move into it
+        move(2.75); //move into it
         horizontalServo(6.0); //turn the compost bin
         Sleep(0.5); //sleep
         horizontalServo(-6.0);
@@ -511,11 +587,12 @@ void milestone3(void){
         LCD.Clear(BLACK);
         LCD.WriteLine("Open Window");
 
-        move(10);
-        turn(-25);
-        move(9);
-        move(-4);
-        powerMove(-5, MOTORPOWER + 5, 50);
+        move(12);
+        turn(-30);
+        move(7);
+        turn(-15);
+        powerMove(-3, MOTORPOWER + 5, MOTORPOWER);
+        powerMove(-2, MOTORPOWER + 5, 50);
         int count = 0;
         while(RCS.isWindowOpen() == 0) {
             powerMove(-1, 60, 60);
