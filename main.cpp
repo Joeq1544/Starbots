@@ -82,6 +82,7 @@ int main(void)
     // }
 
 
+
     //initialize RCS for the proteus for lever and kill switch
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
@@ -219,10 +220,14 @@ This is a function that would take an input of degrees to turn
             degrees that the servo will turn. Can be negative or positive depending on which way user wants it to turn.
             Degrees must be between the minimum and maximum degree.
 */
-void horizontalServo(double seconds, double speed) {
+void horizontalServo(double seconds) {
     //Set arm servo to 0 degrees
-    hor_servo.SetPercent(speed);
-    Sleep(seconds);
+    if (seconds < 0) {
+        hor_servo.SetPercent(MOTORPOWER);
+    } else {
+        hor_servo.SetPercent(-MOTORPOWER);
+    }
+    Sleep(abs(seconds));
     hor_servo.SetPercent(0);
 }
 
@@ -446,7 +451,7 @@ void milestone3(void){
         //hit start button
         move(-1);
         Sleep(0.2);
-        move(1.5);
+        move(2);
 
         /* Start with tasks */
         compostBin();
@@ -489,8 +494,9 @@ void milestone3(void){
         move(6); //move and drive into wall
         turn(15); //turn a little bit to align with the compose bit turner thing
         move(1.5); //move into it
-        horizontalServo(4.0); //turn the compost bin
+        horizontalServo(6.0); //turn the compost bin
         Sleep(0.5); //sleep
+        horizontalServo(-6.0);
     }
 
     void openWindow(void) {
