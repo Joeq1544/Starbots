@@ -72,8 +72,11 @@ int main(void)
     //set the servos min and max values
     vertical_servo.SetMin(VERTICAL_SERVO_MIN);
     vertical_servo.SetMax(VERTICAL_SERVO_MAX);
-    //set the servos both to 0
+    //sets the vertical servo to 180 which is all the way down. 
     verticalServo(180);
+
+    horizontalServo(10.0);
+
 
     /* Testing for correct move distance and turns*/
 
@@ -235,9 +238,9 @@ This is a function that would take an input of degrees to turn
 void horizontalServo(double seconds) {
     //Set arm servo to 0 degrees
     if (seconds < 0) {
-        hor_servo.SetPercent(MOTORPOWER);
+        hor_servo.SetPercent(75);
     } else {
-        hor_servo.SetPercent(-MOTORPOWER);
+        hor_servo.SetPercent(-75);
     }
     Sleep(abs(seconds));
     hor_servo.SetPercent(0);
@@ -547,8 +550,9 @@ void milestone3(void){
         LCD.Clear(BLACK);
 
         turn(-90);
-        move(7);
-        turn(90);
+        move(5.25);
+        turn(108);
+        move(-1);
 
         //once opened window, write code that goes to apples
         apples();
@@ -578,9 +582,9 @@ void milestone3(void){
         move(6); //move and drive into wall
         turn(21); //turn a little bit to align with the compose bit turner thing
         move(2.75); //move into it
-        horizontalServo(6.0); //turn the compost bin
+        horizontalServo(2.25); //turn the compost bin
         Sleep(0.5); //sleep
-        horizontalServo(-6.0);
+        horizontalServo(-2.25);
     }
 
     void openWindow(void) {
@@ -607,6 +611,27 @@ void milestone3(void){
         LCD.Clear(BLACK);
         LCD.WriteLine("apples");
 
+        verticalServo(100);
+        Sleep(0.5);
+        move(4);
+        verticalServo(65);
+        Sleep(0.5);
+        powerMove(-9, MOTORPOWER+5, MOTORPOWER);
+        turn(90);
+        powerMove(-4, MOTORPOWER-5, MOTORPOWER-5);
+        turn(-90);
+        move(-7);
+        move(1.5);
+        turn(90);
+        powerMove(16, MOTORPOWER+7, MOTORPOWER);
+        turn(90);
+        powerMove(5, MOTORPOWER + 5, MOTORPOWER);
+        turn(90);
+        powerMove(6, MOTORPOWER + 5, MOTORPOWER);
+        verticalServo(0);
+        move(2);
+        verticalServo(70);
+        move(-5);
     }
 
     void closeWindow(void) {
