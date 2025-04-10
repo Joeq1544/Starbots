@@ -75,8 +75,6 @@ int main(void)
     //sets the vertical servo to 180 which is all the way down. 
     verticalServo(180);
 
-    horizontalServo(10.0);
-
 
     /* Testing for correct move distance and turns*/
 
@@ -97,13 +95,16 @@ int main(void)
     RCS.InitializeTouchMenu("1020C6GIQ");
     float x,y;
 
-    //Waits for the light to turn red and then calls milestone5();
     LCD.Clear(BLACK);
     LCD.WriteLine("Waiting for touch");
     while(!LCD.Touch(&x, &y)) {
 
     }
+    LCD.Clear(BLACK);
+    LCD.WriteLine("TOUCHED");
     while (CdS_cell.Value() > 0.75) {
+        LCD.WriteLine(CdS_cell.Value());
+        Sleep(0.1);
     }
     finalStart();
 
@@ -534,14 +535,13 @@ void milestone3(void){
     void finalStart(void) {
         //hit start button
         move(-1);
-        Sleep(0.1);
         move(2);
 
         /* Start with tasks */
         compostBin();
         LCD.Clear(BLACK);
 
-        move(-1.5);
+        move(-1.5); 
         turn(90);
         move(-4);
         move(16);
@@ -551,15 +551,24 @@ void milestone3(void){
 
         turn(-90);
         move(5.25);
-        turn(108);
+        turn(96);
         move(-1);
 
         //once opened window, write code that goes to apples
         apples();
         LCD.Clear(BLACK);
+        turn(-90);
+        move(4);
+        turn(90);
+        move(2);
+        turn(-90);
+        move(-2);
+        turn(-7);
+        moveLF(8);
 
         //write code to move towards closing window
-        closeWindow();
+        /*TODO after rest of tasks are done*/
+        // closeWindow();
         LCD.Clear(BLACK);
 
         //write code that moves towards the buttons
@@ -580,7 +589,7 @@ void milestone3(void){
         verticalServo(0);
         turn(-80); //turn closer to the wall
         move(6); //move and drive into wall
-        turn(21); //turn a little bit to align with the compose bit turner thing
+        turn(23); //turn a little bit to align with the compose bit turner thing
         move(2.75); //move into it
         horizontalServo(2.25); //turn the compost bin
         Sleep(0.5); //sleep
@@ -592,18 +601,21 @@ void milestone3(void){
         LCD.WriteLine("Open Window");
 
         move(12);
-        turn(-30);
-        move(7);
+        turn(-25);
+        move(5);
         turn(-15);
         powerMove(-3, MOTORPOWER + 5, MOTORPOWER);
         powerMove(-2, MOTORPOWER + 5, 50);
         int count = 0;
         while(RCS.isWindowOpen() == 0) {
-            powerMove(-1, 60, 60);
+            count++;
+            powerMove(-1, 60 + 4, 60);
             if (count % 3 == 0) {
                 move(0.5);
             }
-            count++;
+            if (count % 8 == 0) {
+                turn(2);
+            }
         }
     }
 
@@ -611,27 +623,27 @@ void milestone3(void){
         LCD.Clear(BLACK);
         LCD.WriteLine("apples");
 
-        verticalServo(100);
+        verticalServo(109); //vertical servo up
         Sleep(0.5);
-        move(4);
-        verticalServo(65);
+        move(3); //move to pick up apples
+        verticalServo(65); //lift apples up
         Sleep(0.5);
-        powerMove(-9, MOTORPOWER+5, MOTORPOWER);
-        turn(90);
-        powerMove(-4, MOTORPOWER-5, MOTORPOWER-5);
-        turn(-90);
-        move(-7);
-        move(1.5);
-        turn(90);
-        powerMove(16, MOTORPOWER+7, MOTORPOWER);
-        turn(90);
-        powerMove(5, MOTORPOWER + 5, MOTORPOWER);
-        turn(90);
-        powerMove(6, MOTORPOWER + 5, MOTORPOWER);
+        powerMove(-5.5, MOTORPOWER+8, MOTORPOWER); //move backwards away from apples
+        turn(86); //turn to face the compost bin wall
+        powerMove(-7.5, MOTORPOWER+8, MOTORPOWER - 2); //move slightly backward
+        turn(-110); //turn to face the ramp wall
+        powerMove(-20, MOTORPOWER+8, MOTORPOWER - 4); //move backwards to hit wall
+        move(1.75);
+        turn(106);
+        powerMove(33, MOTORPOWER+5, MOTORPOWER);
         verticalServo(0);
-        move(2);
-        verticalServo(70);
+        Sleep(0.5);
+        turn(38);
+        move(6);
+        verticalServo(90);
+        Sleep(0.4);
         move(-5);
+
     }
 
     void closeWindow(void) {
@@ -652,9 +664,28 @@ void milestone3(void){
 
         bool forward = false;
         int countHumidifierButton = 0;
-        while (fabs(CdS_cell.Value() - 2.1) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 5) { 
+        while (fabs(CdS_cell.Value() - 1.95) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 5) { 
             move(0.1);
             countHumidifierButton++;
+        }
+
+        verticalServo(180);
+        LCD.WriteLine(CdS_cell.Value());
+        if(CdS_cell.Value() < 1.0) {
+            //red
+            LCD.Clear(RED);
+            turn(87); //turn 
+            move(2);
+            turn(87); //turn 
+            move(-12.6); //press the humidifier button
+        } else {
+            //blue
+            LCD.Clear(BLUE);
+            turn(-87); //turn backwards
+            move(3);  
+            turn(-87); //turn  
+            move(-12.5); //press the humidifier button
+     
         }
     }
     
