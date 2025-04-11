@@ -9,6 +9,7 @@
 #include <time.h>
 #include <cassert>
 
+bool skipStart;
 
 FEHMotor right_motor(FEHMotor::Motor1,9.0); 
 FEHMotor left_motor(FEHMotor::Motor0,9.0); 
@@ -69,6 +70,7 @@ void levers(void);
 
 int main(void)
 {
+    skipStart = false;
     //set the servos min and max values
     vertical_servo.SetMin(VERTICAL_SERVO_MIN);
     vertical_servo.SetMax(VERTICAL_SERVO_MAX);
@@ -102,9 +104,14 @@ int main(void)
     }
     LCD.Clear(BLACK);
     LCD.WriteLine("TOUCHED");
-    while (CdS_cell.Value() > 0.75) {
+    double tNow = TimeNow();
+    
+    while (CdS_cell.Value() > 1.00 && TimeNow() - tNow  < 20.0) {
         LCD.WriteLine(CdS_cell.Value());
         Sleep(0.1);
+        if (TimeNow() - tNow > 19.0) {
+            skipStart = true;
+        }
     }
     finalStart();
 
@@ -534,8 +541,14 @@ void milestone3(void){
 
     void finalStart(void) {
         //hit start button
+
+        if (!skipStart) {
         move(-1);
         move(2);
+        }
+        else {
+            move(1);
+        }
 
         /* Start with tasks */
         compostBin();
@@ -558,8 +571,9 @@ void milestone3(void){
         apples();
         LCD.Clear(BLACK);
         turn(-100);
-        move(3);
-        moveLF(5);
+        move(-2);
+        move(5);
+        moveLF(6);
 
         //write code to move towards closing window
         /*TODO after rest of tasks are done*/
@@ -574,6 +588,7 @@ void milestone3(void){
 
         levers();
         LCD.Clear(BLACK);
+
 
         move(-7);
         turn(-45);
@@ -612,7 +627,10 @@ void milestone3(void){
         int count = 0;
         while(RCS.isWindowOpen() == 0) {
             count++;
-            powerMove(-1, 60 + 2, 60);
+            powerMove(-1, 60 + 4, 60);
+            if(RCS.isWindowOpen == 1) {
+                break;
+            }
             if (count % 3 == 0) {
                 move(0.5);
             }
@@ -704,12 +722,14 @@ void milestone3(void){
         Sleep(0.6);
         turn(20);
         move(5);
-        verticalServo(125);
+        verticalServo(130);
         Sleep(0.6);
+        turn(20);
         move(-5);
+        turn(-30);
         verticalServo(180);
         Sleep(5.0);
-        move(5);
+        move(5.5);
         verticalServo(80);
         Sleep(0.6);
         move(-5);
