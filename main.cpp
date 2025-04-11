@@ -551,20 +551,15 @@ void milestone3(void){
 
         turn(-90);
         move(5.25);
-        turn(96);
+        turn(100);
         move(-1);
 
         //once opened window, write code that goes to apples
         apples();
         LCD.Clear(BLACK);
-        turn(-90);
-        move(4);
-        turn(90);
-        move(2);
-        turn(-90);
-        move(-2);
-        turn(-7);
-        moveLF(8);
+        turn(-100);
+        move(3);
+        moveLF(5);
 
         //write code to move towards closing window
         /*TODO after rest of tasks are done*/
@@ -574,12 +569,20 @@ void milestone3(void){
         //write code that moves towards the buttons
         buttons();
         LCD.Clear(BLACK);
+        move(7);
+        turn(-120);
 
-        //write code that moves towards the levers
         levers();
         LCD.Clear(BLACK);
 
-        //write code that hits the stop button
+        move(-7);
+        turn(-45);
+        move(-7);
+        move(1);
+        turn(-90);
+        move(15);
+        turn(15);
+        move(10);
     }
 
     void compostBin(void){
@@ -609,12 +612,12 @@ void milestone3(void){
         int count = 0;
         while(RCS.isWindowOpen() == 0) {
             count++;
-            powerMove(-1, 60 + 4, 60);
+            powerMove(-1, 60 + 2, 60);
             if (count % 3 == 0) {
                 move(0.5);
             }
-            if (count % 8 == 0) {
-                turn(2);
+            if(count % 8 == 0) {
+                turn(-3);
             }
         }
     }
@@ -633,16 +636,16 @@ void milestone3(void){
         powerMove(-7.5, MOTORPOWER+8, MOTORPOWER - 2); //move slightly backward
         turn(-110); //turn to face the ramp wall
         powerMove(-20, MOTORPOWER+8, MOTORPOWER - 4); //move backwards to hit wall
-        move(1.75);
+        move(2.5);
         turn(106);
-        powerMove(33, MOTORPOWER+5, MOTORPOWER);
+        powerMove(29, MOTORPOWER+5, MOTORPOWER);
         verticalServo(0);
         Sleep(0.5);
-        turn(38);
-        move(6);
-        verticalServo(90);
+        turn(33);
+        move(4);
+        verticalServo(75);
         Sleep(0.4);
-        move(-5);
+        move(-2);
 
     }
 
@@ -664,7 +667,7 @@ void milestone3(void){
 
         bool forward = false;
         int countHumidifierButton = 0;
-        while (fabs(CdS_cell.Value() - 1.95) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 5) { 
+        while (fabs(CdS_cell.Value() - 1.95) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 8) { 
             move(0.1);
             countHumidifierButton++;
         }
@@ -675,15 +678,15 @@ void milestone3(void){
             //red
             LCD.Clear(RED);
             turn(87); //turn 
-            move(2);
+            move(4);
             turn(87); //turn 
             move(-12.6); //press the humidifier button
         } else {
             //blue
             LCD.Clear(BLUE);
-            turn(-87); //turn backwards
-            move(3);  
-            turn(-87); //turn  
+            turn(87); //turn backwards
+            move(-4);  
+            turn(87); //turn  
             move(-12.5); //press the humidifier button
      
         }
@@ -697,7 +700,19 @@ void milestone3(void){
         // 0 – Initial state OR some lever has been flipped back up
         // 1 – At least one lever has been flipped down AND no lever has ever been flipped back up
 
-
+        verticalServo(0);
+        Sleep(0.6);
+        turn(20);
+        move(5);
+        verticalServo(125);
+        Sleep(0.6);
+        move(-5);
+        verticalServo(180);
+        Sleep(5.0);
+        move(5);
+        verticalServo(80);
+        Sleep(0.6);
+        move(-5);
 
 
         int lever = RCS.GetLever();
