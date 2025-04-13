@@ -106,10 +106,10 @@ int main(void)
     LCD.WriteLine("TOUCHED");
     double tNow = TimeNow();
     
-    while (CdS_cell.Value() > 1.00 && TimeNow() - tNow  < 20.0) {
+    while (CdS_cell.Value() > 1.00 && TimeNow() - tNow  < 30.0) {
         LCD.WriteLine(CdS_cell.Value());
         Sleep(0.1);
-        if (TimeNow() - tNow > 19.0) {
+        if (TimeNow() - tNow > 29.0) {
             skipStart = true;
         }
     }
