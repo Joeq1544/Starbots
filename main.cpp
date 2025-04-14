@@ -543,8 +543,9 @@ void milestone3(void){
         //hit start button
 
         if (!skipStart) {
-        move(-1);
-        move(2);
+            move(1.5);
+            move(-2.5);
+            move(2);
         }
         else {
             move(1);
@@ -570,10 +571,11 @@ void milestone3(void){
         //once opened window, write code that goes to apples
         apples();
         LCD.Clear(BLACK);
-        turn(-100);
-        move(-2);
-        move(5);
-        moveLF(6);
+        turn(-107);
+        move(-7);
+        move(6);
+        turn(6);
+        moveLF(8);
 
         //write code to move towards closing window
         /*TODO after rest of tasks are done*/
@@ -628,7 +630,7 @@ void milestone3(void){
         while(RCS.isWindowOpen() == 0) {
             count++;
             powerMove(-1, 60 + 4, 60);
-            if(RCS.isWindowOpen == 1) {
+            if(RCS.isWindowOpen() == 1) {
                 break;
             }
             if (count % 3 == 0) {
@@ -647,23 +649,22 @@ void milestone3(void){
         verticalServo(109); //vertical servo up
         Sleep(0.5);
         move(3); //move to pick up apples
-        verticalServo(65); //lift apples up
+        verticalServo(45); //lift apples up
         Sleep(0.5);
         powerMove(-5.5, MOTORPOWER+8, MOTORPOWER); //move backwards away from apples
         turn(86); //turn to face the compost bin wall
-        powerMove(-7.5, MOTORPOWER+8, MOTORPOWER - 2); //move slightly backward
+        powerMove(-7, MOTORPOWER+8, MOTORPOWER - 2); //move slightly backward
         turn(-110); //turn to face the ramp wall
-        powerMove(-20, MOTORPOWER+8, MOTORPOWER - 4); //move backwards to hit wall
+        powerMove(-25, MOTORPOWER+8, MOTORPOWER - 4); //move backwards to hit wall
         move(2.5);
         turn(106);
-        powerMove(29, MOTORPOWER+5, MOTORPOWER);
+        powerMove(34, MOTORPOWER+8, MOTORPOWER);
         verticalServo(0);
         Sleep(0.5);
         turn(33);
         move(4);
         verticalServo(75);
         Sleep(0.4);
-        move(-2);
 
     }
 
@@ -702,11 +703,13 @@ void milestone3(void){
         } else {
             //blue
             LCD.Clear(BLUE);
-            turn(87); //turn backwards
+            turn(95); //turn backwards
             move(-4);  
+            move(-2);
             turn(87); //turn  
             move(-12.5); //press the humidifier button
-     
+            move(2);
+            turn(-2);
         }
     }
     
@@ -721,7 +724,7 @@ void milestone3(void){
         verticalServo(0);
         Sleep(0.6);
         turn(20);
-        move(5);
+        move(7);
         verticalServo(130);
         Sleep(0.6);
         turn(20);
