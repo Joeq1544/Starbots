@@ -100,7 +100,8 @@ int main(void)
     LCD.Clear(BLACK);
     LCD.WriteLine("Waiting for touch");
     while(!LCD.Touch(&x, &y)) {
-
+        LCD.WriteLine(CdS_cell.Value());
+        Sleep(0.1);
     }
     LCD.Clear(BLACK);
     LCD.WriteLine("TOUCHED");
@@ -573,8 +574,8 @@ void milestone3(void){
         LCD.Clear(BLACK);
         turn(-107);
         move(-7);
-        move(6);
-        turn(6);
+        verticalServo(0);
+        move(8);
         moveLF(8);
 
         //write code to move towards closing window
@@ -592,14 +593,15 @@ void milestone3(void){
         LCD.Clear(BLACK);
 
 
-        move(-7);
         turn(-45);
-        move(-7);
-        move(1);
-        turn(-90);
-        move(15);
-        turn(15);
-        move(10);
+        move(-10);
+        turn(-25);
+        move(-12);
+        move(1.5);
+        turn(98);
+        move(-23);
+        turn(10);
+        move(-30);
     }
 
     void compostBin(void){
@@ -609,7 +611,7 @@ void milestone3(void){
         verticalServo(0);
         turn(-80); //turn closer to the wall
         move(6); //move and drive into wall
-        turn(23); //turn a little bit to align with the compose bit turner thing
+        turn(21.5); //turn a little bit to align with the compose bit turner thing
         move(2.75); //move into it
         horizontalServo(2.25); //turn the compost bin
         Sleep(0.5); //sleep
@@ -629,7 +631,7 @@ void milestone3(void){
         int count = 0;
         while(RCS.isWindowOpen() == 0) {
             count++;
-            powerMove(-1, 60 + 4, 60);
+            powerMove(-1, 60 + 7, 60);
             if(RCS.isWindowOpen() == 1) {
                 break;
             }
@@ -639,8 +641,7 @@ void milestone3(void){
             if(count % 8 == 0) {
                 turn(-3);
             }
-        }
-    }
+        }}
 
     void apples(void) {
         LCD.Clear(BLACK);
@@ -648,17 +649,17 @@ void milestone3(void){
 
         verticalServo(109); //vertical servo up
         Sleep(0.5);
-        move(3); //move to pick up apples
-        verticalServo(45); //lift apples up
+        move(4); //move to pick up apples
+        verticalServo(20); //lift apples up
         Sleep(0.5);
         powerMove(-5.5, MOTORPOWER+8, MOTORPOWER); //move backwards away from apples
         turn(86); //turn to face the compost bin wall
         powerMove(-7, MOTORPOWER+8, MOTORPOWER - 2); //move slightly backward
         turn(-110); //turn to face the ramp wall
-        powerMove(-25, MOTORPOWER+8, MOTORPOWER - 4); //move backwards to hit wall
+        powerMove(-25, MOTORPOWER+6, MOTORPOWER - 2); //move backwards to hit wall
         move(2.5);
-        turn(106);
-        powerMove(34, MOTORPOWER+8, MOTORPOWER);
+        turn(102);
+        powerMove(30, MOTORPOWER + 5, MOTORPOWER);
         verticalServo(0);
         Sleep(0.5);
         turn(33);
@@ -686,14 +687,14 @@ void milestone3(void){
 
         bool forward = false;
         int countHumidifierButton = 0;
-        while (fabs(CdS_cell.Value() - 1.95) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 8) { 
+        while (fabs(CdS_cell.Value() - 0.75) > 0.1 && fabs(CdS_cell.Value() - 1.4) > 0.3 && countHumidifierButton < 8) { 
             move(0.1);
             countHumidifierButton++;
         }
 
         verticalServo(180);
         LCD.WriteLine(CdS_cell.Value());
-        if(CdS_cell.Value() < 1.0) {
+        if(CdS_cell.Value() < 1) {
             //red
             LCD.Clear(RED);
             turn(87); //turn 
@@ -705,12 +706,11 @@ void milestone3(void){
             LCD.Clear(BLUE);
             turn(95); //turn backwards
             move(-4);  
-            move(-2);
             turn(87); //turn  
             move(-12.5); //press the humidifier button
-            move(2);
-            turn(-2);
         }
+        move(2);
+        move(-2);
     }
     
     void levers(void) {
@@ -723,20 +723,19 @@ void milestone3(void){
 
         verticalServo(0);
         Sleep(0.6);
-        turn(20);
+        turn(5);
         move(7);
-        verticalServo(130);
-        Sleep(0.6);
-        turn(20);
+        verticalServo(150);
+        Sleep(0.55);
         move(-5);
-        turn(-30);
-        verticalServo(180);
+        verticalServo(145);
         Sleep(5.0);
         move(5.5);
         verticalServo(80);
         Sleep(0.6);
         move(-5);
 
+        verticalServo(0);
 
         int lever = RCS.GetLever();
 
